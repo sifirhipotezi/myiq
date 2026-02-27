@@ -1,8 +1,8 @@
-const $ = (sel)=>document.querySelector(sel);
-const state = { i:0, data:null, answers:[] };
+const $ = (sel) => document.querySelector(sel);
+const state = { i: 0, data: null, answers: [] };
 const BATTERY_KEY = 'psychometric_battery_v1';
 
-function defaultBatteryState(){
+function defaultBatteryState() {
   return {
     completed: {
       'genelkultur': false,
@@ -22,10 +22,10 @@ function defaultBatteryState(){
   };
 }
 
-function loadBatteryState(){
-  try{
+function loadBatteryState() {
+  try {
     const raw = localStorage.getItem(BATTERY_KEY);
-    if(!raw) return defaultBatteryState();
+    if (!raw) return defaultBatteryState();
     const parsed = JSON.parse(raw);
     const base = defaultBatteryState();
     return {
@@ -33,12 +33,12 @@ function loadBatteryState(){
       rawScores: { ...base.rawScores, ...(parsed.rawScores || {}) },
       updatedAt: parsed.updatedAt || null
     };
-  }catch(_){
+  } catch (_) {
     return defaultBatteryState();
   }
 }
 
-function saveBatteryResult(testId, rawScoreText){
+function saveBatteryResult(testId, rawScoreText) {
   const s = loadBatteryState();
   s.completed[testId] = true;
   s.rawScores[testId] = rawScoreText;
@@ -46,107 +46,96 @@ function saveBatteryResult(testId, rawScoreText){
   localStorage.setItem(BATTERY_KEY, JSON.stringify(s));
 }
 
-function goBackToHub(){
+function goBackToHub() {
   window.location.href = '../index.html';
 }
 
-async function load(){
+async function load() {
   const res = await fetch('items.json');
   state.data = await res.json();
-  $('#progress').textContent = ``; // initially blank
+  $('#progress').textContent = '';
 }
-function render(){
-  const {items} = state.data;
+
+function render() {
+  const { items } = state.data;
   const i = state.i;
-  $('#progress').textContent = `${i+1} / ${items.length}`;
+  $('#progress').textContent = `${i + 1} / ${items.length}`;
   const item = items[i];
-  $('#prompt').textContent = item.prompt || `soru ${i+1}`;
+  $('#prompt').textContent = item.prompt || `soru ${i + 1}`;
   const form = $('#choices');
   form.innerHTML = '';
-  item.choices.forEach((txt,idx)=>{
+  item.choices.forEach((txt, idx) => {
     const id = `opt_${i}_${idx}`;
     const label = document.createElement('label');
     label.className = 'choice';
-    label.innerHTML = `<input type="radio" name="q_${i}" value="${idx}" ${state.answers[i]==idx?'checked':''}><span>${txt}</span>`;
+    label.innerHTML = `<input type="radio" name="q_${i}" value="${idx}" ${state.answers[i] == idx ? 'checked' : ''}><span>${txt}</span>`;
     label.querySelector('input').id = id;
     label.htmlFor = id;
     form.appendChild(label);
   });
-  $('#prev').disabled = i===0;
-  $('#next').textContent = (i===items.length-1) ? 'bitir' : 'sonraki';
+  $('#prev').disabled = i === 0;
+  $('#next').textContent = (i === items.length - 1) ? 'Bitir' : 'Sonraki';
 }
-function pick(){
-  const radios = document.querySelectorAll(`#choices input[type="radio"]`);
+
+function pick() {
+  const radios = document.querySelectorAll('#choices input[type="radio"]');
   let v = null;
-  radios.forEach(r=>{ if(r.checked) v = parseInt(r.value,10); });
+  radios.forEach((r) => { if (r.checked) v = parseInt(r.value, 10); });
   state.answers[state.i] = v;
 }
-$('#prev').addEventListener('click', ()=>{ pick(); state.i--; render(); });
-$('#next').addEventListener('click', ()=>{
-  pick();
-  const last = state.i === state.data.items.length-1;
-  if(!last){ state.i++; render(); }
-  else{ finish(); }
-});
-$('#restart').addEventListener('click', ()=>{
-  state.i=0; state.answers=[];
-  $('#result').classList.add('hidden');
-  $('#card').classList.add('hidden');
-  $('#intro').classList.remove('hidden');
-  $('#progress').textContent = ``;
-});
-$('#continueToHub')?.addEventListener('click', goBackToHub);
-$('#start').addEventListener('click', ()=>{
+
+function beginTest() {
   $('#intro').classList.add('hidden');
   $('#card').classList.remove('hidden');
-  state.i=0;
+  state.i = 0;
   render();
-});
+}
 
-function finish(){
-  const {items} = state.data;
+function finish() {
+  const { items } = state.data;
   let correct = 0;
-  items.forEach((it,idx)=>{
-    if(state.answers[idx] === it.answer_index) correct++;
+  items.forEach((it, idx) => {
+    if (state.answers[idx] === it.answer_index) correct++;
   });
-  const scoreline = `puan: ${correct} / ${items.length}`;
-  $('#scoreline').textContent = scoreline;
+
+  $('#scoreline').textContent = `Puan: ${correct} / ${items.length}`;
   saveBatteryResult('kelimebilgisi', `${correct}/${items.length}`);
-  // answer key
+
   const ol = $('#answerkey');
   ol.innerHTML = '';
-  items.forEach((it,idx)=>{
+  items.forEach((it, idx) => {
     const li = document.createElement('li');
     const user = state.answers[idx];
     const ok = user === it.answer_index;
-    li.innerHTML = `<strong>${it.prompt || 'soru '+(idx+1)}</strong>: doğru 👉 <em>${it.answer_text}</em>` +
-                   (user==null ? ` — <span class="summary-wrong">(boş)</span>` :
-                   ok ? ` — <span class="summary-correct">(doğru)</span>` :
-                        ` — <span class="summary-wrong">(yanlış; sen: ${it.choices[user]})</span>`);
+    li.innerHTML = `<strong>${it.prompt || `soru ${idx + 1}`}</strong>: doğru -> <em>${it.answer_text}</em>` +
+      (user == null ? ` - <span class="summary-wrong">(boş)</span>` :
+      ok ? ` - <span class="summary-correct">(doğru)</span>` :
+      ` - <span class="summary-wrong">(yanlış; sen: ${it.choices[user]})</span>`);
     ol.appendChild(li);
   });
+
   $('#card').classList.add('hidden');
   $('#result').classList.remove('hidden');
 }
 
-
-load();
-document.querySelector('#start')?.addEventListener('click', ()=>{
-  document.querySelector('#intro')?.classList.add('hidden');
-  document.querySelector('#card')?.classList.remove('hidden');
-  state.i = 0;
+$('#prev').addEventListener('click', () => {
+  pick();
+  state.i--;
   render();
 });
 
-
-document.addEventListener('DOMContentLoaded', ()=>{
-  const startBtn = document.querySelector('#start');
-  if(startBtn){
-    startBtn.addEventListener('click', ()=>{
-      document.querySelector('#intro')?.classList.add('hidden');
-      document.querySelector('#card')?.classList.remove('hidden');
-      state.i = 0;
-      render();
-    });
+$('#next').addEventListener('click', () => {
+  pick();
+  const last = state.i === state.data.items.length - 1;
+  if (!last) {
+    state.i++;
+    render();
+  } else {
+    finish();
   }
 });
+
+$('#continueToHub')?.addEventListener('click', goBackToHub);
+$('#start').addEventListener('click', beginTest);
+
+load();

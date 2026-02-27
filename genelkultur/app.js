@@ -1,5 +1,5 @@
-﻿const $ = (sel) => document.querySelector(sel);
-const state = { i: 0, data: null, answers: [], ok: [] };
+const $ = (sel) => document.querySelector(sel);
+const state = { i: 0, data: null, answers: [], ok: [], phase: 'submit' };
 const BATTERY_KEY = 'psychometric_battery_v1';
 
 function defaultBatteryState() {
@@ -87,6 +87,15 @@ function displayAnswerKey(item) {
   return '-';
 }
 
+function setFeedback(ok, correctText) {
+  const fb = $('#feedback');
+  fb.classList.remove('hidden', 'correct', 'wrong');
+  fb.classList.add(ok ? 'correct' : 'wrong');
+  fb.innerHTML =
+    `<div class="feedback-status">${ok ? 'Doğru' : 'Yanlış'}</div>` +
+    `<div class="feedback-answer">Doğru yanıt: ${correctText}</div>`;
+}
+
 function render() {
   const { items } = state.data;
   const i = state.i;
@@ -95,51 +104,78 @@ function render() {
   $('#prompt').textContent = item.prompt || `soru ${i + 1}`;
   $('#answerInput').value = state.answers[i] || '';
   $('#feedback').classList.add('hidden');
+  $('#feedback').innerHTML = '';
   $('#prev').disabled = i === 0;
-  $('#submit').textContent = i === items.length - 1 ? 'bitir' : 'gönder';
+  $('#submit').textContent = 'Gönder';
+  state.phase = 'submit';
   $('#answerInput').focus();
 }
 
-function submit() {
+function evaluateCurrent() {
   const input = $('#answerInput').value || '';
   state.answers[state.i] = input;
   const item = state.data.items[state.i];
   const golds = answerVariants(item);
   const ok = golds.includes(turkishNormalize(input));
   state.ok[state.i] = ok;
-
-  const fb = $('#feedback');
-  fb.classList.remove('hidden');
-  fb.textContent = ok ? 'doğru' : `yanlış • doğru: ${displayAnswerKey(item)}`;
-  fb.className = 'feedback ' + (ok ? 'summary-correct' : 'summary-wrong');
-
+  setFeedback(ok, displayAnswerKey(item));
   const last = state.i === state.data.items.length - 1;
-  setTimeout(() => {
-    if (!last) {
-      state.i++;
-      render();
-    } else {
-      finish();
-    }
-  }, 750);
+  $('#submit').textContent = last ? 'Bitir' : 'İleri';
+  state.phase = 'advance';
+}
+
+function advance() {
+  const last = state.i === state.data.items.length - 1;
+  if (!last) {
+    state.i++;
+    render();
+  } else {
+    finish();
+  }
+}
+
+function onSubmitClick() {
+  if (state.phase === 'submit') {
+    evaluateCurrent();
+    return;
+  }
+  advance();
+}
+
+function finish() {
+  const { items } = state.data;
+  const correct = state.ok.filter(Boolean).length;
+  $('#scoreline').textContent = `Puan: ${correct} / ${items.length}`;
+  saveBatteryResult('genelkultur', `${correct}/${items.length}`);
+
+  const ol = $('#answerkey');
+  ol.innerHTML = '';
+  items.forEach((it, idx) => {
+    const li = document.createElement('li');
+    const user = state.answers[idx] || '(boş)';
+    const ok = state.ok[idx];
+    const keyText = displayAnswerKey(it);
+    li.innerHTML = `<strong>${it.prompt || `soru ${idx + 1}`}</strong>: doğru -> <em>${keyText}</em> - ` +
+      (ok ? `<span class="summary-correct">doğru</span>` : `<span class="summary-wrong">yanlış</span>`) +
+      `; sen: ${user}`;
+    ol.appendChild(li);
+  });
+
+  $('#card').classList.add('hidden');
+  $('#result').classList.remove('hidden');
 }
 
 $('#prev').addEventListener('click', () => {
-  state.i--;
-  render();
+  if (state.i > 0) {
+    state.i--;
+    render();
+  }
 });
-$('#submit').addEventListener('click', submit);
+
+$('#submit').addEventListener('click', onSubmitClick);
 $('#answerForm').addEventListener('submit', (e) => {
   e.preventDefault();
-  submit();
-});
-$('#restart').addEventListener('click', () => {
-  state.i = 0;
-  state.answers = [];
-  state.ok = [];
-  $('#result').classList.add('hidden');
-  $('#card').classList.remove('hidden');
-  render();
+  onSubmitClick();
 });
 $('#continueToHub')?.addEventListener('click', goBackToHub);
 
@@ -151,28 +187,5 @@ document.addEventListener('DOMContentLoaded', () => {
     render();
   });
 });
-
-function finish() {
-  const { items } = state.data;
-  const correct = state.ok.filter(Boolean).length;
-  $('#scoreline').textContent = `puan: ${correct} / ${items.length}`;
-  saveBatteryResult('genelkultur', `${correct}/${items.length}`);
-
-  const ol = $('#answerkey');
-  ol.innerHTML = '';
-  items.forEach((it, idx) => {
-    const li = document.createElement('li');
-    const user = state.answers[idx] || '(boş)';
-    const ok = state.ok[idx];
-    const keyText = displayAnswerKey(it);
-    li.innerHTML = `<strong>${it.prompt || 'soru ' + (idx + 1)}</strong>: doğru -> <em>${keyText}</em> - ` +
-      (ok ? `<span class="summary-correct">doğru</span>` : `<span class="summary-wrong">yanlış</span>`) +
-      `; sen: ${user}`;
-    ol.appendChild(li);
-  });
-
-  $('#card').classList.add('hidden');
-  $('#result').classList.remove('hidden');
-}
 
 load();

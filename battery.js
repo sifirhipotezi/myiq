@@ -210,6 +210,21 @@ function getMatricesDescriptor(ss) {
 }
 
 // ─── Compute all scores ───
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function getCompositeScore(vci, matricesIQ, wmIQ) {
+  if (vci === null || matricesIQ === null || wmIQ === null) return null;
+  const v = Number(vci);
+  const m = Number(matricesIQ);
+  const w = Number(wmIQ);
+  if (!Number.isFinite(v) || !Number.isFinite(m) || !Number.isFinite(w)) return null;
+  const rawSum = v + m + w;
+  const SD_SUM = 36.74;
+  const composite = Math.round(((rawSum - 300) / SD_SUM) * 15 + 100);
+  return clamp(composite, 40, 160);
+}
 function computeAllScores() {
   const session = getSession();
   if (!session) return null;
@@ -241,6 +256,7 @@ function computeAllScores() {
   const dsScores = parseDigitSpanScores(rawScores.digitspan);
   const dsScaledScore = getDigitSpanScaledScore(dsScores.overall, ageYears);
   const dsIQ = scaledScoreToIQ(dsScaledScore);
+  const compositeIQ = getCompositeScore(vci.vci, matricesSS, dsIQ);
 
   return {
     vci,
@@ -256,6 +272,7 @@ function computeAllScores() {
     dsScores,
     dsScaledScore,
     dsIQ,
+    compositeIQ,
     ageYears,
     session,
   };
@@ -285,6 +302,7 @@ function persistSessionResults(scores) {
       analogies_pct: scores.analogiPct,
       digitspan_ss: scores.dsScaledScore,
       digitspan_iq: scores.dsIQ,
+      composite_iq: scores.compositeIQ,
     },
     durations_seconds: {
       kb: null,
@@ -497,6 +515,15 @@ function renderResults() {
     $('#results-name').classList.remove('hidden');
   }
 
+  // Composite Hero
+  if (scores.compositeIQ !== null) {
+    $('#composite-value').textContent = scores.compositeIQ;
+    $('#composite-descriptor').textContent = getVCIDescriptor(scores.compositeIQ);
+  } else {
+    $('#composite-value').textContent = '-';
+    $('#composite-descriptor').textContent = 'Hesaplanamadı';
+  }
+
   // VCI Hero
   const vci = scores.vci;
   $('#vci-value').textContent = vci.vci;
@@ -691,6 +718,9 @@ function shareResults(scores) {
   const dsIQ = scores.dsIQ;
 
   let text = `Zekatesti Sonuçları\n`;
+  if (scores.compositeIQ !== null) {
+    text += `Genel Bileşik Puan: ${scores.compositeIQ}\n`;
+  }
   text += `Sözel Kavrayış (VCI): ${vci.vci} [${vci.vci_ci90_lo}\u2013${vci.vci_ci90_hi}]\n`;
 
   if (scores.matricesSS !== null) {

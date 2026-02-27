@@ -3,24 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Keep these if you already had them; safe to remove pure.css if unused -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="pure-v2.0.6.css" />
     <link rel="stylesheet" href="index.css" />
     <script src="index.js" type="module"></script>
-    <title>Digit Span — Sayı Dizisi Pilot</title>
+    <title>Sayı Dizisi (Digit Span)</title>
   </head>
 
   <body>
-    <h2>Sayı Dizisi (Digit Span) — Pilot</h2>
+    <h2>Sayı Dizisi (Digit Span)</h2>
 
     <div id="container">
       <button id="play" data-clicked="false">BAŞLAT</button>
 
       <form>
         <div id="textbox-container">
-          <!-- masked visual input -->
           <span id="pseudo-submission" tabindex="0">&nbsp;</span>
-          <!-- real backing input (usually hidden by CSS) -->
           <input id="submission" type="text" inputmode="numeric" autocomplete="off" />
         </div>
         <button id="submit-and-continue" disabled>Gönder & Devam</button>
@@ -57,7 +57,7 @@
       </div>
 
       <div class="actions">
-        <button id="continue-to-hub" type="button" style="display:none;">Alt Testlere Dön</button>
+        <button id="continue-to-hub" class="secondary-btn" type="button" style="display:none;">Alttestlere Dön</button>
       </div>
     </div>
   </body>

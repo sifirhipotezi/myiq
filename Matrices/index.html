@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <title>Görsel Akıl Yürütme Testi</title>
   <style>
     :root {
@@ -10,7 +13,7 @@
       --card: #ffffff;
       --text: #1f2937;
       --muted: #6b7280;
-      --accent: #0b5fff;
+      --accent: #1e2d4a;
       --accent-soft: #dbe8ff;
       --border: #d1d5db;
       --danger: #b91c1c;
@@ -22,7 +25,7 @@
 
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      font-family: "Plus Jakarta Sans", sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.4;
@@ -104,6 +107,19 @@
     .progress {
       font-weight: 700;
       margin-bottom: 12px;
+      min-width: 74px;
+      text-align: center;
+      padding: 0.38rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .test-head {
+      display: flex;
+      justify-content: flex-end;
     }
 
     .stem-wrap {
@@ -171,10 +187,11 @@
 
     button {
       border: 1px solid transparent;
-      border-radius: 8px;
-      padding: 10px 16px;
+      border-radius: 10px;
+      padding: 0.62rem 1rem;
       font-weight: 700;
       cursor: pointer;
+      min-height: 40px;
     }
 
     .primary {
@@ -183,17 +200,17 @@
     }
 
     .primary:hover:not(:disabled) {
-      background: #0849c8;
+      background: #172338;
     }
 
     .secondary {
-      background: #eef2f7;
+      background: transparent;
       border-color: var(--border);
       color: var(--text);
     }
 
     .secondary:hover {
-      background: #e2e8f0;
+      background: #eef1f7;
     }
 
     button:disabled {
@@ -283,7 +300,9 @@
     </section>
 
     <section id="screen-test" class="card hidden">
-      <div id="progress" class="progress">Soru 1 / 37</div>
+      <div class="test-head">
+        <div id="progress" class="progress">1 / 36</div>
+      </div>
       <div class="stem-wrap">
         <img id="stem-img" alt="Soru görseli" />
       </div>
@@ -308,6 +327,7 @@
       </div>
       <div class="actions">
         <button id="share-btn" class="secondary" type="button">Sonuçları Paylaş</button>
+        <button class="secondary" type="button" onclick="window.location.href='../index.html'" style="margin-left:8px;">Alttestlere Dön</button>
       </div>
       <p id="share-status" class="muted" aria-live="polite"></p>
     </section>
@@ -466,7 +486,7 @@
 
       const itemId = getCurrentItemId();
       const questionNo = state.itemIndex + 1;
-      progressEl.textContent = `Soru ${questionNo} / ${TOTAL_ITEMS}`;
+      progressEl.textContent = `${questionNo} / ${TOTAL_ITEMS}`;
 
       stemImg.src = getItemPath(itemId, 'stem');
       stemImg.alt = `Soru ${questionNo} ana görsel`;

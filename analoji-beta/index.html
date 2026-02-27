@@ -1,176 +1,56 @@
 <!doctype html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>analogies prototype</title>
+  <title>Sözel Analogiler</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="app">
+  <main class="wrap">
     <header class="topbar">
-      <div class="brand">
-        <div class="title">analogies subtest</div>
-        <div class="subtitle" id="bankInfo">loading…</div>
-      </div>
-
-      <div class="controls">
-        <button id="langBtn" class="btn btn-ghost" type="button" title="toggle language">lang: tr</button>
-        <button id="devBtn" class="btn btn-ghost" type="button" title="toggle dev info">dev: off</button>
-        <button id="restartBtn" class="btn btn-ghost" type="button" title="restart">restart</button>
-      </div>
+      <h1>Sözel Analogiler</h1>
+      <div id="progressChip" class="progress-chip hidden"></div>
     </header>
 
-    <main class="card">
-      <section id="startScreen">
-        <h1>prototype run</h1>
-        <p class="muted">
-          this will assemble 40 items (32 fixed + 8 rotation). rotation items are administered but not scored.
-        </p>
+    <section id="startScreen" class="card">
+      <h2>Yönergeler</h2>
+      <p>Her soruda solda bir kelime çifti görürsünüz. Göreviniz bu iki sözcük arasındaki ilişkiyi belirlemek ve aynı ilişkiyi taşıyan seçeneği bulmaktır.</p>
 
-        <div class="pillrow">
-          <span class="pill" id="countsPill">fixed: ? • rotation pool: ?</span>
-          <span class="pill">scored: fixed only</span>
-          <span class="pill">order: randomized</span>
-          <span class="pill">advance: auto</span>
-        </div>
-<div class="instr">
-  <div class="lang-block lang-en">
-    <h2>instructions</h2>
+      <div class="instruction-box">
+        <p><strong>Örnek:</strong> BÜLBÜL : KUŞ</p>
+        <p>BÜLBÜL bir kuş türüdür. Aşağıdaki çiftlerden hangisi aynı ilişkiyi gösterir?</p>
+        <ul class="example-list">
+          <li>TIRTIL : GÜVE</li>
+          <li>KERTENKELE : KURBAĞA</li>
+          <li>TOMURCUK : YAPRAK</li>
+          <li>KAPLAN : KEDİ</li>
+          <li>ESİNTİ : FIRTINA</li>
+        </ul>
+        <p><strong>KAPLAN : KEDİ</strong> doğrudur, çünkü kaplan bir kedi türüdür.</p>
+      </div>
 
-    <p>
-      in each question, you are given a pair of words on the left. your task is to identify the relationship
-      between them, then choose the pair on the right that shares the same relationship.
-    </p>
+      <button id="startBtn" class="btn" type="button">Başla</button>
+    </section>
 
-    <p class="muted"><strong>example:</strong><br>
-      OSTRICH : BIRD
-    </p>
+    <section id="testScreen" class="card hidden">
+      <div class="stem" id="stem"></div>
+      <div class="choices" id="choices"></div>
+      <div class="nav">
+        <button id="backBtn" class="btn secondary" type="button">Geri</button>
+        <button id="nextBtn" class="btn" type="button" disabled>İleri</button>
+      </div>
+    </section>
 
-    <p>
-      an ostrich is a type of bird. which pair below has the same relationship?
-    </p>
-
-    <ul class="example-list">
-      <li>caterpillar : moth</li>
-      <li>lizard : frog</li>
-      <li>bud : leaf</li>
-      <li>tiger : cat</li>
-      <li>gust : storm</li>
-    </ul>
-
-    <p>
-      <strong>tiger : cat</strong> is correct because a tiger is a type of cat, matching the same “type of”
-      relationship as ostrich : bird.
-    </p>
-
-    <p>
-      some relationships you may encounter include: a word and its definition, cause and effect, a tool and its function,
-      a part and the whole it belongs to, or opposites. your task is always to find the pair that mirrors the relationship
-      exactly, not just words that seem loosely related.
-    </p>
-
-    <p class="muted">work through the questions in order. there is no time limit.</p>
-  </div>
-
-  <div class="lang-block lang-tr">
-    <h2>yönergeler</h2>
-
-    <p>
-      her soruda, solda bir kelime çifti verilir. göreviniz, bu iki sözcük arasındaki ilişkiyi belirlemek ve
-      sağ tarafta aynı ilişkiyi paylaşan çifti seçmektir.
-    </p>
-
-    <p class="muted"><strong>örnek:</strong><br>
-      BÜLBÜL : KUŞ
-    </p>
-
-    <p>
-      BÜLBÜL bir kuş türüdür. aşağıdaki çiftlerden hangisi aynı ilişkiyi gösterir?
-    </p>
-
-    <ul class="example-list">
-      <li>TIRTIL : GÜVE</li>
-      <li>KERTENKELE : KURBAĞA </li>
-      <li>TOMURCUK : YAPRAK</li>
-      <li>KAPLAN : KEDİ </li>
-      <li>ESİNTİ : FIRTINA </li>
-    </ul>
-
-    <p>
-      <strong>KAPLAN : KEDİ</strong> doğrudur, çünkü kaplan bir kedi türüdür. bu, devekuşu : kuş örneğindeki
-      “tür” ilişkisiyle aynıdır.
-    </p>
-
-    <p>
-      karşılaşabileceğiniz bazı ilişki türleri şunlardır: bir sözcük ve tanımı, neden-sonuç, bir araç ve işlevi,
-      bir parça ve ait olduğu bütün ya da zıt anlamlılar. göreviniz her zaman ilişkiyi <strong>tam olarak</strong>
-      aynalayan çifti bulmaktır; sadece “bir şekilde ilgili görünen” sözcükleri değil.
-    </p>
-
-    <p class="muted">soruları sırayla yanıtlayın. süre sınırı yoktur.</p>
-  </div>
-</div>
-        <button id="startBtn" class="btn btn-primary" type="button">start</button>
-        <div class="tiny muted">tip: use ← / → for back/next once you start. (or just click, like a mammal.)</div>
-      </section>
-
-      <section id="testScreen" class="hidden">
-        <div class="progress">
-          <div class="bar"><div id="barFill" class="fill"></div></div>
-          <div class="meta">
-            <span id="progressText">item 1 / 40</span>
-            <span id="typeTag" class="tag">fixed</span>
-          </div>
-        </div>
-
-        <div class="stem" id="stem"></div>
-
-        <div class="choices" id="choices"></div>
-
-        <div id="devInfo" class="dev hidden"></div>
-
-        <div class="nav">
-          <button id="backBtn" class="btn" type="button">back</button>
-          <button id="nextBtn" class="btn btn-primary" type="button" disabled>next</button>
-        </div>
-      </section>
-
-      <section id="endScreen" class="hidden">
-        <h1>done</h1>
-        <div class="scorebox">
-          <div class="scoreline">
-            <span class="label">raw (fixed only)</span>
-            <span class="value" id="rawScore">-</span>
-          </div>
-          <div class="scoreline">
-            <span class="label">fixed correct</span>
-            <span class="value" id="fixedCorrect">-</span>
-          </div>
-          <div class="scoreline">
-            <span class="label">fixed total</span>
-            <span class="value" id="fixedTotal">-</span>
-          </div>
-          <div class="scoreline">
-            <span class="label">rotation answered</span>
-            <span class="value" id="rotAnswered">-</span>
-          </div>
-        </div>
-
-        <div class="endBtns">
-          <button id="downloadBtn" class="btn btn-primary" type="button">download attempt json</button>
-          <button id="reviewBtn" class="btn" type="button">review answers</button>
-          <button id="continueToHub" class="btn" type="button">return to subtests</button>
-        </div>
-
-        <pre id="reviewBox" class="review hidden"></pre>
-      </section>
-    </main>
-
-    <footer class="footer muted">
-      local prototype. do not ship answer keys to clients in production unless you enjoy people cheating.
-    </footer>
-  </div>
+    <section id="endScreen" class="card hidden">
+      <h2>Sonuç</h2>
+      <p id="scoreline" class="scoreline">puan: -</p>
+      <button id="continueToHub" class="btn secondary return-btn" type="button">Alttestlere Dön</button>
+    </section>
+  </main>
 
   <script src="app.js"></script>
 </body>

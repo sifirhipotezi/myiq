@@ -1,19 +1,19 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="tr">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>kelime bilgisi - pilot</title>
+  <title>Kelime Bilgisi</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main class="wrap">
     <header class="topbar">
-      <h1>kelime bilgisi</h1>
-      <div id="progress"></div>
+      <h1>Kelime Bilgisi</h1>
+      <div id="progress" class="progress-chip"></div>
     </header>
 
     <section id="intro" class="card">
@@ -29,7 +29,7 @@
         <li>E) Kötü</li>
       </ul>
       <div class="nav" style="margin-top:14px">
-        <button id="start" class="btn" type="button">başla</button>
+        <button id="start" class="btn" type="button">Başla</button>
       </div>
     </section>
 
@@ -37,25 +37,20 @@
       <div class="prompt" id="prompt">...</div>
       <form id="choices" class="choices"></form>
       <div class="nav">
-        <button id="prev" class="btn ghost" type="button">geri</button>
-        <button id="next" class="btn" type="button">sonraki</button>
+        <button id="prev" class="btn secondary" type="button">Geri</button>
+        <button id="next" class="btn" type="button">Sonraki</button>
       </div>
     </section>
 
     <section id="result" class="card hidden">
-      <h2>sonuç</h2>
+      <h2>Sonuç</h2>
       <p id="scoreline"></p>
-      <button id="restart" class="btn" type="button">baştan</button>
-      <button id="continueToHub" class="btn" type="button">alt testlere dön</button>
+      <button id="continueToHub" class="btn secondary return-btn" type="button">Alttestlere Dön</button>
       <details class="details">
-        <summary>yanıt anahtarı</summary>
+        <summary>Yanıt Anahtarı</summary>
         <ol id="answerkey"></ol>
       </details>
     </section>
-
-    <footer class="footer">
-      <small>statik, backend yok. © sifirhipotezi</small>
-    </footer>
   </main>
 
   <script type="module" src="app.js"></script>

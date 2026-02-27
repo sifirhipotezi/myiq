@@ -6,7 +6,7 @@
   <title>Zekatesti — Bilişsel Değerlendirme Bataryası</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="battery.css" />
 </head>
 <body>
@@ -121,6 +121,13 @@
         </p>
       </div>
 
+      <div class="result-hero composite-hero">
+        <div class="result-hero-label">GENEL BİLEŞİK PUAN</div>
+        <div class="result-hero-value" id="composite-value">-</div>
+        <div class="result-hero-descriptor" id="composite-descriptor"></div>
+        <div class="result-hero-ci" id="composite-footnote">VCI, Gf ve Gsm alt testlerinin bileşiği. %90 güven aralığı: ±10 puan</div>
+      </div>
+
       <!-- VCI Hero -->
       <div class="result-hero">
         <div class="result-hero-label">Sözel Kavrayış İndeksi (VCI)</div>
@@ -192,7 +199,7 @@
       </div>
 
       <div style="text-align: center; margin-top: 16px;">
-        <button class="btn btn-secondary btn-sm" onclick="window.__battery.showHub()">Alt Testlere Dön</button>
+        <button class="btn btn-secondary btn-sm" onclick="window.__battery.showHub()">Alttestlere Dön</button>
       </div>
     </section>
 
