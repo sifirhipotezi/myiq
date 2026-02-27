@@ -242,6 +242,31 @@
       color: var(--muted);
     }
 
+    .debug-panel {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border: 1px dashed #94a3b8;
+      border-radius: 8px;
+      background: #f8fafc;
+      font-size: 12px;
+    }
+
+    .debug-title {
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #334155;
+    }
+
+    .debug-log {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 180px;
+      overflow: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color: #1e293b;
+    }
+
     @media (min-width: 700px) {
       .app {
         padding: 18px 18px 32px;
@@ -310,6 +335,10 @@
       <div class="actions">
         <button id="next-btn" class="primary" type="button" disabled>İleri</button>
       </div>
+      <div id="debug-panel" class="debug-panel hidden">
+        <div class="debug-title">DEBUG (yalnızca ?debug=1)</div>
+        <pre id="debug-log" class="debug-log"></pre>
+      </div>
     </section>
 
     <section id="screen-results" class="card hidden">
@@ -340,6 +369,7 @@
     const ITEM_END = 50;
     const TOTAL_ITEMS = ITEM_END - ITEM_START + 1;
     const BASAL = 13;
+    const DEBUG_MODE = new URLSearchParams(window.location.search).get('debug') === '1';
 
     const appRoot = document.getElementById('app-root');
     const landingScreen = document.getElementById('screen-landing');
@@ -355,6 +385,8 @@
     const stemImg = document.getElementById('stem-img');
     const optionsGrid = document.getElementById('options-grid');
     const nextBtn = document.getElementById('next-btn');
+    const debugPanelEl = document.getElementById('debug-panel');
+    const debugLogEl = document.getElementById('debug-log');
 
     const ssValue = document.getElementById('ss-value');
     const labelValue = document.getElementById('label-value');
@@ -380,7 +412,8 @@
       ageGroup: null,
       ageYears: 0,
       ageMonths: 0,
-      result: null
+      result: null,
+      debugRows: []
     };
 
     function normalizeDash(str) {
@@ -533,6 +566,46 @@
       });
     }
 
+    function getCurrentWrongStreak() {
+      let streak = 0;
+      for (let i = state.presentedItemIds.length - 1; i >= 0; i -= 1) {
+        const itemId = state.presentedItemIds[i];
+        const chosen = state.responses[String(itemId)];
+        const correct = KBIT2.answers[String(itemId)];
+        if (chosen !== correct) {
+          streak += 1;
+        } else {
+          break;
+        }
+      }
+      return streak;
+    }
+
+    function writeDebug(event, data) {
+      if (!DEBUG_MODE) return;
+      const row = { event, ...data };
+      state.debugRows.push(row);
+      if (state.debugRows.length > 120) {
+        state.debugRows = state.debugRows.slice(-120);
+      }
+
+      const lines = state.debugRows.slice(-16).map((r) => {
+        const base = `[${r.event}] item=${r.itemId ?? '-'} chosen=${r.chosen ?? '-'} correct=${r.correct ?? '-'} ok=${r.isCorrect ?? '-'} streak=${r.wrongStreak ?? '-'}`;
+        if (r.lastThree) {
+          return `${base} lastThree=${r.lastThree.join(',')}`;
+        }
+        return base;
+      });
+      debugLogEl.textContent = lines.join('\n');
+      console.log('[Matrices Debug]', row);
+    }
+
+    function setupDebugMode() {
+      if (!DEBUG_MODE) return;
+      debugPanelEl.classList.remove('hidden');
+      writeDebug('DEBUG_ON', {});
+    }
+
     function formatDuration(seconds) {
       const mins = Math.floor(seconds / 60);
       const secs = seconds % 60;
@@ -619,10 +692,32 @@
 
     function onNext() {
       const itemId = getCurrentItemId();
-      state.responses[String(itemId)] = state.selectedOption;
+      const chosen = state.selectedOption;
+      const correct = KBIT2.answers[String(itemId)];
+      const isCorrect = chosen === correct;
+
+      state.responses[String(itemId)] = chosen;
       state.presentedItemIds.push(itemId);
+      const wrongStreak = getCurrentWrongStreak();
+
+      writeDebug('ANSWER', {
+        itemId,
+        chosen,
+        correct,
+        isCorrect,
+        wrongStreak
+      });
 
       if (checkDiscontinue()) {
+        const lastThree = state.presentedItemIds.slice(-3);
+        writeDebug('DISCONTINUE', {
+          itemId,
+          chosen,
+          correct,
+          isCorrect,
+          wrongStreak,
+          lastThree
+        });
         state.discontinued = true;
         endTest();
         return;
@@ -663,6 +758,7 @@
       landingScreen.classList.add('hidden');
       testScreen.classList.remove('hidden');
       appRoot.classList.remove('centered');
+      writeDebug('START_TEST', {});
       renderItem();
     }
 
@@ -695,6 +791,7 @@
       }
     }
 
+    setupDebugMode();
     startBtn.addEventListener('click', startTest);
     nextBtn.addEventListener('click', onNext);
     shareBtn.addEventListener('click', shareResults);
