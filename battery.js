@@ -5,7 +5,7 @@ import { scaledScoreToIQ } from './digitspan/score.js';
 // ─── Constants ───
 const SESSION_KEY = 'zekatesti_session';
 const BATTERY_KEY = 'psychometric_battery_v1';
-const MATRICES_RESULT_KEYS = ['kbit2_results', 'matrices_results'];
+const MATRICES_RESULT_KEYS = ['matrices_results', 'kbit2_results'];
 const RESULTS_KEY = 'zekatesti_results';
 const CURRENT_TEST_KEY = 'zekatesti_current_test';
 
@@ -147,15 +147,46 @@ function parseDigitSpanScores(str) {
 
 function getMatricesResult() {
   try {
+    const candidates = [];
+
     for (const key of MATRICES_RESULT_KEYS) {
       const raw = localStorage.getItem(key);
       if (!raw) continue;
       const arr = JSON.parse(raw);
-      if (Array.isArray(arr) && arr.length > 0) {
-        return arr[arr.length - 1];
+      if (!Array.isArray(arr) || arr.length === 0) continue;
+
+      const latest = arr[arr.length - 1];
+      const ts = Date.parse(
+        latest?.timestamp ||
+        latest?.created_at ||
+        latest?.started_at ||
+        ''
+      );
+
+      candidates.push({
+        key,
+        latest,
+        hasValidTs: Number.isFinite(ts),
+        ts: Number.isFinite(ts) ? ts : null,
+      });
+    }
+
+    if (candidates.length === 0) return null;
+
+    const dated = candidates.filter((c) => c.hasValidTs);
+    if (dated.length > 0) {
+      dated.sort((a, b) => a.ts - b.ts);
+      return dated[dated.length - 1].latest;
+    }
+
+    for (const key of MATRICES_RESULT_KEYS) {
+      const found = candidates.find((c) => c.key === key);
+      if (found) {
+        return found.latest;
       }
     }
-    return null;
+
+    return candidates[candidates.length - 1].latest;
   } catch {
     return null;
   }
