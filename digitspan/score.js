@@ -1,5 +1,13 @@
 import { NORMS } from './norms.js';
 
+export function scaledScoreToIQ(scaledScore) {
+  if (scaledScore === null || scaledScore === undefined) return null;
+  const ss = Number(scaledScore);
+  if (!Number.isFinite(ss)) return null;
+  // Wechsler scaled score (M=10, SD=3) -> IQ metric (M=100, SD=15)
+  return Math.round(100 + ((ss - 10) / 3) * 15);
+}
+
 class Score {
   #FORWARD = 0;
   #BACKWARD = 0;

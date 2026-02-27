@@ -1,10 +1,11 @@
 import { scoreVCI } from './verbalcomprehensionnorms.js';
 import { SCALED_SCORES } from './digitspan/scaled-scores.js';
+import { scaledScoreToIQ } from './digitspan/score.js';
 
 // ─── Constants ───
 const SESSION_KEY = 'zekatesti_session';
 const BATTERY_KEY = 'psychometric_battery_v1';
-const KBIT2_KEY = 'kbit2_results';
+const MATRICES_RESULT_KEYS = ['kbit2_results', 'matrices_results'];
 const RESULTS_KEY = 'zekatesti_results';
 const CURRENT_TEST_KEY = 'zekatesti_current_test';
 
@@ -146,11 +147,15 @@ function parseDigitSpanScores(str) {
 
 function getMatricesResult() {
   try {
-    const raw = localStorage.getItem(KBIT2_KEY);
-    if (!raw) return null;
-    const arr = JSON.parse(raw);
-    if (!Array.isArray(arr) || arr.length === 0) return null;
-    return arr[arr.length - 1];
+    for (const key of MATRICES_RESULT_KEYS) {
+      const raw = localStorage.getItem(key);
+      if (!raw) continue;
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr) && arr.length > 0) {
+        return arr[arr.length - 1];
+      }
+    }
+    return null;
   } catch {
     return null;
   }
@@ -235,6 +240,7 @@ function computeAllScores() {
   // Digit Span
   const dsScores = parseDigitSpanScores(rawScores.digitspan);
   const dsScaledScore = getDigitSpanScaledScore(dsScores.overall, ageYears);
+  const dsIQ = scaledScoreToIQ(dsScaledScore);
 
   return {
     vci,
@@ -249,6 +255,7 @@ function computeAllScores() {
     analogiTotal: analogiParsed.total,
     dsScores,
     dsScaledScore,
+    dsIQ,
     ageYears,
     session,
   };
@@ -277,6 +284,7 @@ function persistSessionResults(scores) {
       matrices_pct: scores.matricesPct ? String(scores.matricesPct) : null,
       analogies_pct: scores.analogiPct,
       digitspan_ss: scores.dsScaledScore,
+      digitspan_iq: scores.dsIQ,
     },
     durations_seconds: {
       kb: null,
@@ -287,7 +295,7 @@ function persistSessionResults(scores) {
     },
   };
 
-  // Try to get Matrices duration from kbit2_results
+  // Try to get Matrices duration from the stored Matrices payload
   const matricesResult = getMatricesResult();
   if (matricesResult?.duration_seconds) {
     record.durations_seconds.matrices = matricesResult.duration_seconds;
@@ -520,10 +528,11 @@ function renderResults() {
 
   // Digit Span
   const dsSS = scores.dsScaledScore;
-  $('#digitspan-value').textContent = dsSS !== null ? dsSS : '-';
-  $('#digitspan-sub').textContent = dsSS !== null ? `ÖP (ort=10, SS=3)` : 'Hesaplanamadı';
+  const dsIQ = scores.dsIQ;
+  $('#digitspan-value').textContent = dsIQ !== null ? dsIQ : '-';
+  $('#digitspan-sub').textContent = dsIQ !== null ? 'IQ eşdeğeri' : 'Hesaplanamadı';
   $('#digitspan-detail').textContent =
-    `İleri: ${scores.dsScores.forward}  Geri: ${scores.dsScores.backward}  Sıralama: ${scores.dsScores.sequencing}  Toplam: ${scores.dsScores.overall}`;
+    `İleri: ${scores.dsScores.forward}  Geri: ${scores.dsScores.backward}  Sıralama: ${scores.dsScores.sequencing}  Toplam: ${scores.dsScores.overall}  ÖP: ${dsSS ?? '-'}`;
 
   // Profile chart
   renderProfileChart(scores);
@@ -546,7 +555,7 @@ function renderProfileChart(scores) {
   // All scores normalized to IQ scale (40-160) for the bar chart
   // VCI: already IQ scale
   // Matrices: already IQ scale
-  // Digit Span: scaled score × 6 + 40 approximation
+  // Digit Span: scaled score -> IQ via score.js conversion
   // Analogies: percentile → z-score → IQ approximation
 
   const chartMin = 40;
@@ -573,13 +582,12 @@ function renderProfileChart(scores) {
     });
   }
 
-  // Digit Span (ss × 6 + 40)
-  if (scores.dsScaledScore !== null) {
-    const dsIQEquiv = scores.dsScaledScore * 6 + 40;
+  // Digit Span
+  if (scores.dsIQ !== null) {
     rows.push({
       label: 'Çalışma Belleği (Gsm)',
-      value: dsIQEquiv,
-      displayValue: `${scores.dsScaledScore} ÖP`,
+      value: scores.dsIQ,
+      displayValue: String(scores.dsIQ),
       normed: true,
     });
   }
@@ -680,6 +688,7 @@ function percentileToZ(pct) {
 function shareResults(scores) {
   const vci = scores.vci;
   const dsSS = scores.dsScaledScore;
+  const dsIQ = scores.dsIQ;
 
   let text = `Zekatesti Sonuçları\n`;
   text += `Sözel Kavrayış (VCI): ${vci.vci} [${vci.vci_ci90_lo}\u2013${vci.vci_ci90_hi}]\n`;
@@ -692,8 +701,8 @@ function shareResults(scores) {
 
   text += `Sözel Akıl Yürütme: ${scores.analogiPct}. yüzdelik (ön-normatif)\n`;
 
-  if (dsSS !== null) {
-    text += `Çalışma Belleği: ${dsSS} ÖP\n`;
+  if (dsIQ !== null) {
+    text += `Çalışma Belleği (Gsm): ${dsIQ} IQ (ÖP: ${dsSS})\n`;
   }
 
   navigator.clipboard.writeText(text).then(() => {

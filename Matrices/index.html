@@ -1,0 +1,683 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Görsel Akıl Yürütme Testi</title>
+  <style>
+    :root {
+      --bg: #f5f6f8;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --accent: #0b5fff;
+      --accent-soft: #dbe8ff;
+      --border: #d1d5db;
+      --danger: #b91c1c;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .app {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 16px 14px 28px;
+    }
+
+    .app.centered {
+      max-width: 100%;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+
+    .app.centered .card {
+      width: min(760px, 100%);
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+    h1, h2 {
+      margin-top: 0;
+      margin-bottom: 12px;
+    }
+
+    p {
+      margin-top: 0;
+      margin-bottom: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .form-row {
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    input, select, button {
+      font: inherit;
+    }
+
+    input[type="text"],
+    select {
+      width: 100%;
+      max-width: 340px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--text);
+    }
+
+    .error {
+      color: var(--danger);
+      min-height: 20px;
+      margin: 8px 0 0;
+      font-size: 0.95rem;
+    }
+
+    .progress {
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .stem-wrap {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .stem-wrap img {
+      width: 100%;
+      max-width: 560px;
+      height: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(100px, 1fr));
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .option-btn {
+      border: 2px solid transparent;
+      border-radius: 8px;
+      background: transparent;
+      padding: 3px;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background-color 0.15s ease;
+      color: var(--text);
+    }
+
+    .option-btn:hover {
+      border-color: #94a3b8;
+    }
+
+    .option-btn.selected {
+      border-color: var(--accent);
+      background: #eef4ff;
+    }
+
+    .option-label {
+      font-weight: 700;
+      margin-top: 4px;
+      text-align: left;
+      font-size: 1.4rem;
+      line-height: 1;
+      text-align: center;
+    }
+
+    .option-btn img {
+      width: 100%;
+      height: 130px;
+      object-fit: contain;
+      display: block;
+      border: 1px solid var(--border);
+      background: #fff;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    button {
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .primary:hover:not(:disabled) {
+      background: #0849c8;
+    }
+
+    .secondary {
+      background: #eef2f7;
+      border-color: var(--border);
+      color: var(--text);
+    }
+
+    .secondary:hover {
+      background: #e2e8f0;
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .result-main {
+      font-size: 3rem;
+      font-weight: 800;
+      margin: 4px 0 16px;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .result-item {
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #fafafa;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    @media (min-width: 700px) {
+      .app {
+        padding: 18px 18px 32px;
+      }
+
+      .card {
+        padding: 16px;
+      }
+
+      .options-grid {
+        grid-template-columns: repeat(6, minmax(120px, 1fr));
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .option-btn img {
+        height: 170px;
+      }
+
+      .option-label {
+        font-size: 1.9rem;
+      }
+
+      .result-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main id="app-root" class="app centered">
+    <section id="screen-landing" class="card">
+      <h1>Görsel Akıl Yürütme Testi</h1>
+      <p>Bu testte her soruda eksik parçayı bulmanız istenmektedir. Altı seçenekten doğru olanı seçin.</p>
+
+      <div class="form-row">
+        <label for="age-input">Yaşınız</label>
+        <input id="age-input" type="text" inputmode="decimal" placeholder="Yaşınız" required />
+      </div>
+
+      <div class="form-row">
+        <label for="gender">Cinsiyet</label>
+        <select id="gender">
+          <option value="Erkek">Erkek</option>
+          <option value="Kadın">Kadın</option>
+          <option value="Diğer">Diğer</option>
+          <option value="Belirtmek istemiyorum">Belirtmek istemiyorum</option>
+        </select>
+      </div>
+
+      <p id="landing-error" class="error"></p>
+
+      <div class="actions">
+        <button id="start-btn" class="primary" type="button">Başla</button>
+      </div>
+    </section>
+
+    <section id="screen-test" class="card hidden">
+      <div id="progress" class="progress">Soru 1 / 37</div>
+      <div class="stem-wrap">
+        <img id="stem-img" alt="Soru görseli" />
+      </div>
+      <div id="options-grid" class="options-grid"></div>
+      <div class="actions">
+        <button id="next-btn" class="primary" type="button" disabled>İleri</button>
+      </div>
+    </section>
+
+    <section id="screen-results" class="card hidden">
+      <h2>Sonuçlar</h2>
+      <div class="muted">Standart Puan (SS)</div>
+      <div id="ss-value" class="result-main">-</div>
+      <div id="label-value" class="result-item"></div>
+      <div class="result-grid">
+        <div id="percentile-value" class="result-item"></div>
+        <div id="ci90-value" class="result-item"></div>
+        <div id="raw-value" class="result-item"></div>
+        <div id="attempted-value" class="result-item"></div>
+        <div id="duration-value" class="result-item"></div>
+        <div id="age-group-value" class="result-item"></div>
+      </div>
+      <div class="actions">
+        <button id="share-btn" class="secondary" type="button">Sonuçları Paylaş</button>
+      </div>
+      <p id="share-status" class="muted" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script type="module">
+    import { KBIT2 } from './matrices.js';
+
+    const ITEM_START = Number(KBIT2.meta.start_item_age14plus) || 14;
+    const ITEM_END = 49;
+    const TOTAL_ITEMS = ITEM_END - ITEM_START + 1;
+    const BASAL = 13;
+
+    const appRoot = document.getElementById('app-root');
+    const landingScreen = document.getElementById('screen-landing');
+    const testScreen = document.getElementById('screen-test');
+    const resultScreen = document.getElementById('screen-results');
+
+    const ageInput = document.getElementById('age-input');
+    const genderInput = document.getElementById('gender');
+    const startBtn = document.getElementById('start-btn');
+    const landingError = document.getElementById('landing-error');
+
+    const progressEl = document.getElementById('progress');
+    const stemImg = document.getElementById('stem-img');
+    const optionsGrid = document.getElementById('options-grid');
+    const nextBtn = document.getElementById('next-btn');
+
+    const ssValue = document.getElementById('ss-value');
+    const labelValue = document.getElementById('label-value');
+    const percentileValue = document.getElementById('percentile-value');
+    const ci90Value = document.getElementById('ci90-value');
+    const rawValue = document.getElementById('raw-value');
+    const attemptedValue = document.getElementById('attempted-value');
+    const durationValue = document.getElementById('duration-value');
+    const ageGroupValue = document.getElementById('age-group-value');
+    const shareBtn = document.getElementById('share-btn');
+    const shareStatus = document.getElementById('share-status');
+
+    const state = {
+      ageInput: null,
+      cinsiyet: 'Erkek',
+      startTime: null,
+      endTime: null,
+      itemIndex: 0,
+      selectedOption: null,
+      responses: {},
+      presentedItemIds: [],
+      discontinued: false,
+      ageGroup: null,
+      ageYears: 0,
+      ageMonths: 0,
+      result: null
+    };
+
+    function normalizeDash(str) {
+      return String(str).replace(/â€“/g, '–').replace(/-/g, '–');
+    }
+
+    function parseAgeGroupKey(key) {
+      const normalized = normalizeDash(key).trim();
+      const match = normalized.match(/^(\d+):(\d+)\s*[–]\s*(\d+):(\d+)$/);
+      if (!match) {
+        return null;
+      }
+      const minYears = Number(match[1]);
+      const minMonths = Number(match[2]);
+      const maxYears = Number(match[3]);
+      const maxMonths = Number(match[4]);
+      return {
+        key,
+        normalized,
+        minTotalMonths: minYears * 12 + minMonths,
+        maxTotalMonths: maxYears * 12 + maxMonths
+      };
+    }
+
+    function parseAgeInput(value) {
+      const parsed = Number(String(value).trim().replace(',', '.'));
+      if (!Number.isFinite(parsed) || parsed < 0) {
+        return null;
+      }
+      return parsed;
+    }
+
+    function getAgeGroup(ageInYears) {
+      if (ageInYears === null) {
+        return null;
+      }
+
+      const clampedYears = Math.max(14, ageInYears);
+      const yearsWhole = Math.floor(clampedYears);
+      const monthsFromDecimal = Math.round((clampedYears - yearsWhole) * 12);
+      const normalizedMonths = Math.min(Math.max(monthsFromDecimal, 0), 11);
+
+      state.ageYears = yearsWhole;
+      state.ageMonths = normalizedMonths;
+
+      const groupEntries = Object.keys(KBIT2.norms)
+        .map(parseAgeGroupKey)
+        .filter(Boolean)
+        .sort((a, b) => a.minTotalMonths - b.minTotalMonths);
+
+      if (!groupEntries.length) {
+        return null;
+      }
+
+      const minMeta = parseAgeGroupKey(KBIT2.meta.winsorize_min_age_group);
+      const maxMeta = parseAgeGroupKey(KBIT2.meta.winsorize_max_age_group);
+
+      const minGroup = minMeta
+        ? groupEntries.find(g => normalizeDash(g.key) === minMeta.normalized)
+        : groupEntries[0];
+      const maxGroup = maxMeta
+        ? groupEntries.find(g => normalizeDash(g.key) === maxMeta.normalized)
+        : groupEntries[groupEntries.length - 1];
+
+      let totalMonths = yearsWhole * 12 + normalizedMonths;
+      if (totalMonths < minGroup.minTotalMonths) {
+        totalMonths = minGroup.minTotalMonths;
+      }
+      if (totalMonths > maxGroup.maxTotalMonths) {
+        totalMonths = maxGroup.maxTotalMonths;
+      }
+
+      const inRange = groupEntries.find(
+        g => totalMonths >= g.minTotalMonths && totalMonths <= g.maxTotalMonths
+      );
+
+      return inRange ? inRange.key : minGroup.key;
+    }
+
+    function lookupNorm(raw, ageGroup) {
+      const table = KBIT2.norms[ageGroup] || [];
+      return table.find(row => raw >= row.raw_min && raw <= row.raw_max) || null;
+    }
+
+    function getCurrentItemId() {
+      return ITEM_START + state.itemIndex;
+    }
+
+    function getItemPath(itemId, type, optionNumber) {
+      if (type === 'stem') {
+        return `./nonverbal_split_items/item_${itemId}/item_${itemId}_stem.png`;
+      }
+      return `./nonverbal_split_items/item_${itemId}/item_${itemId}_option_${optionNumber}.png`;
+    }
+
+    function renderItem() {
+      if (state.startTime === null) {
+        state.startTime = Date.now();
+      }
+
+      state.selectedOption = null;
+      nextBtn.disabled = true;
+
+      const itemId = getCurrentItemId();
+      const questionNo = state.itemIndex + 1;
+      progressEl.textContent = `Soru ${questionNo} / ${TOTAL_ITEMS}`;
+
+      stemImg.src = getItemPath(itemId, 'stem');
+      stemImg.alt = `Soru ${questionNo} ana görsel`;
+
+      optionsGrid.innerHTML = '';
+      for (let i = 1; i <= 6; i += 1) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'option-btn';
+        btn.dataset.option = String(i);
+        btn.setAttribute('aria-label', `Seçenek ${i}`);
+
+        const label = document.createElement('div');
+        label.className = 'option-label';
+        label.textContent = String(i);
+
+        const img = document.createElement('img');
+        img.src = getItemPath(itemId, 'option', i);
+        img.alt = `Seçenek ${i}`;
+
+        btn.appendChild(img);
+        btn.appendChild(label);
+        btn.addEventListener('click', () => {
+          state.selectedOption = i;
+          nextBtn.disabled = false;
+          [...optionsGrid.children].forEach(el => el.classList.remove('selected'));
+          btn.classList.add('selected');
+        });
+
+        optionsGrid.appendChild(btn);
+      }
+    }
+
+    function checkDiscontinue() {
+      if (state.presentedItemIds.length < 3) {
+        return false;
+      }
+
+      const lastThree = state.presentedItemIds.slice(-3);
+      return lastThree.every(itemId => {
+        const chosen = state.responses[String(itemId)];
+        const correct = KBIT2.answers[String(itemId)];
+        return chosen !== correct;
+      });
+    }
+
+    function formatDuration(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${mins} dk ${secs} sn`;
+    }
+
+    function getDescriptor(ss) {
+      if (ss >= 130) return 'Çok Üstün';
+      if (ss >= 120) return 'Üstün';
+      if (ss >= 110) return 'Ortalamanın Üstü';
+      if (ss >= 90) return 'Ortalama';
+      if (ss >= 80) return 'Ortalamanın Altı';
+      if (ss >= 70) return 'Sınır';
+      return 'Çok Düşük';
+    }
+
+    function persistResult(payload) {
+      const key = 'matrices_results';
+      let existing = [];
+      try {
+        const raw = localStorage.getItem(key);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) {
+            existing = parsed;
+          }
+        }
+      } catch (err) {
+        existing = [];
+      }
+      existing.push(payload);
+      localStorage.setItem(key, JSON.stringify(existing));
+    }
+
+    function endTest() {
+      state.endTime = Date.now();
+
+      const scoredItemIds = state.discontinued
+        ? state.presentedItemIds.slice(0, -3)
+        : [...state.presentedItemIds];
+
+      const correctCount = scoredItemIds.reduce((sum, itemId) => {
+        const chosen = state.responses[String(itemId)];
+        const correct = KBIT2.answers[String(itemId)];
+        return sum + (chosen === correct ? 1 : 0);
+      }, 0);
+
+      const raw = BASAL + correctCount;
+      const ageGroup = state.ageGroup;
+      const norm = lookupNorm(raw, ageGroup);
+
+      const durationSeconds = Math.max(0, Math.round((state.endTime - state.startTime) / 1000));
+      const ss = norm ? norm.ss : null;
+      const percentile = norm ? norm.percentile : '-';
+      const ci90 = norm ? norm.ci90 : ['-', '-'];
+
+      ssValue.textContent = ss ?? '-';
+      labelValue.textContent = ss !== null ? `Düzey: ${getDescriptor(ss)}` : 'Düzey: Hesaplanamadı';
+      percentileValue.textContent = `Yüzdelik Dilim: ${percentile}`;
+      ci90Value.textContent = `Güven Aralığı (%90): ${ci90[0]} - ${ci90[1]}`;
+      rawValue.textContent = `Ham Puan: ${raw}`;
+      attemptedValue.textContent = `Yanıtlanan Soru: ${state.presentedItemIds.length}`;
+      durationValue.textContent = `Süre: ${formatDuration(durationSeconds)}`;
+      ageGroupValue.textContent = `Yaş Grubu: ${ageGroup}`;
+
+      state.result = {
+        timestamp: new Date().toISOString(),
+        age_group: ageGroup,
+        cinsiyet: state.cinsiyet,
+        raw,
+        ss: ss ?? null,
+        percentile: String(percentile),
+        items_attempted: state.presentedItemIds.length,
+        discontinued: state.discontinued,
+        duration_seconds: durationSeconds,
+        responses: { ...state.responses }
+      };
+
+      persistResult(state.result);
+
+      testScreen.classList.add('hidden');
+      resultScreen.classList.remove('hidden');
+    }
+
+    function onNext() {
+      const itemId = getCurrentItemId();
+      state.responses[String(itemId)] = state.selectedOption;
+      state.presentedItemIds.push(itemId);
+
+      if (checkDiscontinue()) {
+        state.discontinued = true;
+        endTest();
+        return;
+      }
+
+      if (itemId >= ITEM_END) {
+        endTest();
+        return;
+      }
+
+      state.itemIndex += 1;
+      renderItem();
+    }
+
+    function startTest() {
+      const ageValue = ageInput.value;
+      if (!ageValue) {
+        landingError.textContent = 'Lütfen yaşınızı girin.';
+        return;
+      }
+
+      const parsedAge = parseAgeInput(ageValue);
+      if (parsedAge === null) {
+        landingError.textContent = 'Geçerli bir yaş girin.';
+        return;
+      }
+
+      landingError.textContent = '';
+      state.ageInput = ageValue;
+      state.cinsiyet = genderInput.value;
+      state.ageGroup = getAgeGroup(parsedAge);
+
+      if (!state.ageGroup) {
+        landingError.textContent = 'Yaş grubu hesaplanamadı.';
+        return;
+      }
+
+      landingScreen.classList.add('hidden');
+      testScreen.classList.remove('hidden');
+      appRoot.classList.remove('centered');
+      renderItem();
+    }
+
+    async function shareResults() {
+      if (!state.result) {
+        return;
+      }
+
+      const r = state.result;
+      const descriptor = r.ss !== null ? getDescriptor(r.ss) : 'Hesaplanamadı';
+      const text = [
+        'KBIT-2 Nonverbal (Matrices) Sonuç Özeti',
+        `Tarih: ${new Date(r.timestamp).toLocaleString('tr-TR')}`,
+        `Yaş Grubu: ${r.age_group}`,
+        `Cinsiyet: ${r.cinsiyet}`,
+        `Ham Puan: ${r.raw}`,
+        `Standart Puan (SS): ${r.ss ?? '-'}`,
+        `Düzey: ${descriptor}`,
+        `Yüzdelik Dilim: ${r.percentile}`,
+        `Yanıtlanan Soru: ${r.items_attempted}`,
+        `Kesme Kuralı Uygulandı: ${r.discontinued ? 'Evet' : 'Hayır'}`,
+        `Süre: ${formatDuration(r.duration_seconds)}`
+      ].join('\n');
+
+      try {
+        await navigator.clipboard.writeText(text);
+        shareStatus.textContent = 'Sonuç özeti panoya kopyalandı.';
+      } catch (err) {
+        shareStatus.textContent = 'Kopyalama başarısız oldu. Tarayıcı izinlerini kontrol edin.';
+      }
+    }
+
+    startBtn.addEventListener('click', startTest);
+    nextBtn.addEventListener('click', onNext);
+    shareBtn.addEventListener('click', shareResults);
+  </script>
+</body>
+</html>
