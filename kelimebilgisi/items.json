@@ -1,0 +1,441 @@
+{
+  "title": "Kelime Bilgisi",
+  "lang": "tr",
+  "version": 1,
+  "items": [
+    {
+      "id": 1,
+      "prompt": "Evhamlı",
+      "choices": [
+        "Asi",
+        "Sempatik",
+        "Kibirli",
+        "Uyumsuz",
+        "Soğukkanlı"
+      ],
+      "answer_index": 4,
+      "answer_text": "Soğukkanlı",
+      "type": "synonym"
+    },
+    {
+      "id": 2,
+      "prompt": "Fason",
+      "choices": [
+        "Pahalı",
+        "Orijinal",
+        "Sahte",
+        "Kaçak",
+        "Seçmece"
+      ],
+      "answer_index": 1,
+      "answer_text": "Orijinal",
+      "type": "synonym"
+    },
+    {
+      "id": 3,
+      "prompt": "Münferit",
+      "choices": [
+        "Hakiki",
+        "Geride kalmış",
+        "Geçerli",
+        "Birlikte",
+        "Dürüst"
+      ],
+      "answer_index": 3,
+      "answer_text": "Birlikte",
+      "type": "synonym"
+    },
+    {
+      "id": 4,
+      "prompt": "Lakayıt",
+      "choices": [
+        "Umursar",
+        "Anlamlı",
+        "Eğitimli",
+        "Kederli",
+        "Eliaçık"
+      ],
+      "answer_index": 0,
+      "answer_text": "Umursar",
+      "type": "synonym"
+    },
+    {
+      "id": 5,
+      "prompt": "Pirupak",
+      "choices": [
+        "Geniş",
+        "Kırık",
+        "Namuslu",
+        "Kirli",
+        "Boyalı"
+      ],
+      "answer_index": 3,
+      "answer_text": "Kirli",
+      "type": "synonym"
+    },
+    {
+      "id": 6,
+      "prompt": "Kart",
+      "choices": [
+        "Necip",
+        "Vahim",
+        "Narin",
+        "Uyumsuz",
+        "Körpe"
+      ],
+      "answer_index": 4,
+      "answer_text": "Körpe",
+      "type": "synonym"
+    },
+    {
+      "id": 7,
+      "prompt": "Mütebessim",
+      "choices": [
+        "Kavgacı",
+        "Antika",
+        "Eğlenceli",
+        "Firari",
+        "Somurtkan"
+      ],
+      "answer_index": 4,
+      "answer_text": "Somurtkan",
+      "type": "synonym"
+    },
+    {
+      "id": 8,
+      "prompt": "Hısım",
+      "choices": [
+        "El",
+        "Komşu",
+        "Davalı",
+        "Akran",
+        "Tanış"
+      ],
+      "answer_index": 0,
+      "answer_text": "El",
+      "type": "synonym"
+    },
+    {
+      "id": 9,
+      "prompt": "Fiili",
+      "choices": [
+        "Ani",
+        "İçten",
+        "Varsayımsal",
+        "Yersiz",
+        "Koşulsuz"
+      ],
+      "answer_index": 2,
+      "answer_text": "Varsayımsal",
+      "type": "synonym"
+    },
+    {
+      "id": 10,
+      "prompt": "Viran",
+      "choices": [
+        "Mamur",
+        "Sevindirici",
+        "Rahat",
+        "Elibol",
+        "Gelecek"
+      ],
+      "answer_index": 0,
+      "answer_text": "Mamur",
+      "type": "synonym"
+    },
+    {
+      "id": 11,
+      "prompt": "Müşkülpesent",
+      "choices": [
+        "Müreffeh",
+        "Kolay beğenir",
+        "Tatminsiz",
+        "Kolay çiğnenir",
+        "İyi görünümlü"
+      ],
+      "answer_index": 1,
+      "answer_text": "Kolay beğenir",
+      "type": "synonym"
+    },
+    {
+      "id": 12,
+      "prompt": "Biperva",
+      "choices": [
+        "Çiroz",
+        "Babayiğit",
+        "Fettan",
+        "Laubali",
+        "Ödlek"
+      ],
+      "answer_index": 4,
+      "answer_text": "Ödlek",
+      "type": "synonym"
+    },
+    {
+      "id": 13,
+      "prompt": "Diğerkam",
+      "choices": [
+        "Tutumsuz",
+        "Totaliter",
+        "Dogmatik",
+        "Sosyopat",
+        "Hodbin"
+      ],
+      "answer_index": 4,
+      "answer_text": "Hodbin",
+      "type": "synonym"
+    },
+    {
+      "id": 14,
+      "prompt": "Menfi",
+      "choices": [
+        "Müspet",
+        "Fenni",
+        "Beşeri",
+        "Abdal",
+        "Fahri"
+      ],
+      "answer_index": 0,
+      "answer_text": "Müspet",
+      "type": "synonym"
+    },
+    {
+      "id": 15,
+      "prompt": "Müzmin",
+      "choices": [
+        "Akut",
+        "Kronik",
+        "İyimser",
+        "Mürted",
+        "Bitaraf"
+      ],
+      "answer_index": 0,
+      "answer_text": "Akut",
+      "type": "synonym"
+    },
+    {
+      "id": 16,
+      "prompt": "Aksak",
+      "choices": [
+        "Aşınmaz",
+        "Kuvvetli",
+        "Kati",
+        "Dinamik",
+        "Sağlam"
+      ],
+      "answer_index": 4,
+      "answer_text": "Sağlam",
+      "type": "synonym"
+    },
+    {
+      "id": 17,
+      "prompt": "İlga etmek",
+      "choices": [
+        "Kurtarmak",
+        "Onarmak",
+        "Savunmak",
+        "Kurmak",
+        "İflas etmek"
+      ],
+      "answer_index": 3,
+      "answer_text": "Kurmak",
+      "type": "synonym"
+    },
+    {
+      "id": 18,
+      "prompt": "Meth etme",
+      "choices": [
+        "Tahkir etme",
+        "Dışlama",
+        "Yasaklama",
+        "Gönül kırma",
+        "Adaletsizlik"
+      ],
+      "answer_index": 0,
+      "answer_text": "Tahkir etme",
+      "type": "synonym"
+    },
+    {
+      "id": 19,
+      "prompt": "Hafifmeşrep",
+      "choices": [
+        "Dinibütün",
+        "Çabuk öfkelenen",
+        "Pisboğaz",
+        "İffetli",
+        "Hoppa"
+      ],
+      "answer_index": 3,
+      "answer_text": "İffetli",
+      "type": "synonym"
+    },
+    {
+      "id": 20,
+      "prompt": "Merdümgiriz",
+      "choices": [
+        "Hümanist",
+        "Optimist",
+        "Realist",
+        "Nihilist",
+        "Stoik"
+      ],
+      "answer_index": 0,
+      "answer_text": "Hümanist",
+      "type": "synonym"
+    },
+    {
+      "id": 21,
+      "prompt": "Örtük",
+      "choices": [
+        "Aşikar",
+        "Belirsiz",
+        "Kaknem",
+        "Karanlık",
+        "Faydasız"
+      ],
+      "answer_index": 0,
+      "answer_text": "Aşikar",
+      "type": "synonym"
+    },
+    {
+      "id": 22,
+      "prompt": "İstikrarlı",
+      "choices": [
+        "Sınırsız",
+        "Sığ",
+        "Teğetsel",
+        "Durağan",
+        "Düzensiz"
+      ],
+      "answer_index": 4,
+      "answer_text": "Düzensiz",
+      "type": "synonym"
+    },
+    {
+      "id": 23,
+      "prompt": "Elit",
+      "choices": [
+        "Meritokrat",
+        "Yaban",
+        "Esnaf",
+        "Ayaktakımı",
+        "Kentli"
+      ],
+      "answer_index": 3,
+      "answer_text": "Ayaktakımı",
+      "type": "synonym"
+    },
+    {
+      "id": 24,
+      "prompt": "Kadirşinas",
+      "choices": [
+        "Kuvvetsiz",
+        "Yardımsever",
+        "Ayrımcı",
+        "Duygusal",
+        "Değerbilmez"
+      ],
+      "answer_index": 4,
+      "answer_text": "Değerbilmez",
+      "type": "synonym"
+    },
+    {
+      "id": 25,
+      "prompt": "Kıtıpiyöz",
+      "choices": [
+        "Izbandut",
+        "Ceberut",
+        "Dönek",
+        "Güvenilir",
+        "Değerli"
+      ],
+      "answer_index": 4,
+      "answer_text": "Değerli",
+      "type": "synonym"
+    },
+    {
+      "id": 26,
+      "prompt": "Zaruri",
+      "choices": [
+        "İhtiyari",
+        "Kâr getiren",
+        "Zarla kaplı",
+        "Afaki",
+        "Geçici"
+      ],
+      "answer_index": 0,
+      "answer_text": "İhtiyari",
+      "type": "synonym"
+    },
+    {
+      "id": 27,
+      "prompt": "Abstre",
+      "choices": [
+        "Somut",
+        "Boş",
+        "Kontra",
+        "Canlı",
+        "İde"
+      ],
+      "answer_index": 0,
+      "answer_text": "Somut",
+      "type": "synonym"
+    },
+    {
+      "id": 28,
+      "prompt": "Endogami",
+      "choices": [
+        "Poligami",
+        "Monogami",
+        "Egzogami",
+        "Polijini",
+        "Poliandri"
+      ],
+      "answer_index": 2,
+      "answer_text": "Egzogami",
+      "type": "synonym"
+    },
+    {
+      "id": 29,
+      "prompt": "İhtimam",
+      "choices": [
+        "İhmal",
+        "Mani",
+        "Destek",
+        "Rahat bırakma",
+        "Kavrama"
+      ],
+      "answer_index": 0,
+      "answer_text": "İhmal",
+      "type": "synonym"
+    },
+    {
+      "id": 30,
+      "prompt": "Layemut",
+      "choices": [
+        "Muariz",
+        "Hayırhah",
+        "Fani",
+        "Nizami",
+        "Bizar"
+      ],
+      "answer_index": 2,
+      "answer_text": "Fani",
+      "type": "synonym"
+    },
+    {
+      "id": 31,
+      "prompt": "Kulampara",
+      "choices": [
+        "Aylak",
+        "Romantik",
+        "İbne",
+        "İş sahibi",
+        "Okuryazar"
+      ],
+      "answer_index": 2,
+      "answer_text": "İbne",
+      "type": "synonym"
+    }
+  ]
+}

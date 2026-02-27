@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zekatesti — Bilişsel Değerlendirme Bataryası</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="battery.css" />
+</head>
+<body>
+  <div class="battery-wrap">
+
+    <!-- ════════ SCREEN: DEMOGRAPHICS ════════ -->
+    <section id="screen-demographics">
+      <header style="margin-bottom: 32px;">
+        <h1 class="battery-title">Zekatesti</h1>
+        <p class="battery-subtitle">Bilişsel Değerlendirme Bataryası</p>
+      </header>
+
+      <div class="card">
+        <p class="section-heading">Katılımcı Bilgileri</p>
+
+        <form id="demographics-form">
+          <div class="form-group">
+            <label for="input-name">Ad (isteğe bağlı)</label>
+            <input id="input-name" class="form-input" type="text" placeholder="Adınız" autocomplete="given-name" />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="input-birthdate">Doğum Tarihi</label>
+              <input id="input-birthdate" class="form-input" type="date" required />
+              <div class="form-hint">Yaş bazlı norm düzeltmeleri için gereklidir.</div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-cinsiyet">Cinsiyet</label>
+              <select id="input-cinsiyet" class="form-select">
+                <option value="Erkek">Erkek</option>
+                <option value="Kadın">Kadın</option>
+                <option value="Diğer">Diğer</option>
+                <option value="Belirtmek istemiyorum">Belirtmek istemiyorum</option>
+              </select>
+            </div>
+          </div>
+
+          <p id="demographics-error" style="color: var(--danger); font-size: 13px; min-height: 20px; margin: 4px 0 0;"></p>
+
+          <div style="margin-top: 20px;">
+            <button class="btn btn-primary btn-block" type="submit">Bataryaya Başla</button>
+          </div>
+        </form>
+      </div>
+
+      <footer class="battery-footer">
+        Tüm veriler yerel olarak tarayıcınızda saklanır. Hiçbir veri sunucuya gönderilmez.
+      </footer>
+    </section>
+
+    <!-- ════════ SCREEN: HUB ════════ -->
+    <section id="screen-hub" class="hidden">
+      <header style="margin-bottom: 24px;">
+        <h1 class="battery-title">Zekatesti</h1>
+        <p class="battery-subtitle">Alt testleri sırasıyla tamamlayın.</p>
+      </header>
+
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-label">
+          <span>İlerleme</span>
+          <span id="hub-progress-text">0 / 5 tamamlandı</span>
+        </div>
+        <div class="progress-bar-track">
+          <div id="hub-progress-fill" class="progress-bar-fill" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div id="subtest-list" class="subtest-list"></div>
+
+      <div style="margin-top: 20px; text-align: center;">
+        <button id="show-results-btn" class="btn btn-primary hidden" onclick="window.__battery.showResults()">
+          Sonuçları Görüntüle
+        </button>
+      </div>
+
+      <div class="reset-section">
+        <button class="btn btn-danger btn-sm" onclick="if(confirm('Oturum sıfırlansın mı? Alt test verileri silinmez.')) window.__battery.resetBattery()">
+          Oturumu Sıfırla
+        </button>
+      </div>
+    </section>
+
+    <!-- ════════ SCREEN: TRANSITION ════════ -->
+    <section id="screen-transition" class="hidden">
+      <div class="card transition-screen">
+        <h2>Harika!</h2>
+        <p>Sonraki bölüme geçebilirsin.</p>
+
+        <div class="progress-bar-wrap" style="max-width: 320px; margin: 0 auto 24px;">
+          <div class="progress-bar-label">
+            <span>İlerleme</span>
+            <span id="transition-progress-text">0 / 5 tamamlandı</span>
+          </div>
+          <div class="progress-bar-track">
+            <div id="transition-progress-fill" class="progress-bar-fill" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <button id="transition-continue" class="btn btn-primary">Devam Et</button>
+      </div>
+    </section>
+
+    <!-- ════════ SCREEN: RESULTS ════════ -->
+    <section id="screen-results" class="hidden">
+      <div class="results-header">
+        <h1 class="battery-title">Değerlendirme Raporu</h1>
+        <p class="battery-subtitle">
+          <span id="results-name" class="hidden" style="font-weight: 600;"></span>
+          <span id="results-date"></span>
+        </p>
+      </div>
+
+      <!-- VCI Hero -->
+      <div class="result-hero">
+        <div class="result-hero-label">Sözel Kavrayış İndeksi (VCI)</div>
+        <div class="result-hero-value" id="vci-value">-</div>
+        <div class="result-hero-descriptor" id="vci-descriptor"></div>
+        <div class="result-hero-ci" id="vci-ci"></div>
+        <div style="margin-top: 12px; font-size: 12px; color: var(--text-tertiary);">
+          <span id="vci-kb-detail"></span> &middot; <span id="vci-gk-detail"></span>
+        </div>
+      </div>
+
+      <!-- Score cards -->
+      <div class="score-grid">
+        <!-- Matrices -->
+        <div class="score-card">
+          <div class="score-card-label">Akıcı Akıl Yürütme (Gf)</div>
+          <div class="score-card-value" id="matrices-value">-</div>
+          <div class="score-card-sub" id="matrices-sub"></div>
+          <div class="score-card-sub" id="matrices-ci"></div>
+          <div class="score-card-sub" id="matrices-pct"></div>
+        </div>
+
+        <!-- Digit Span -->
+        <div class="score-card">
+          <div class="score-card-label">Çalışma Belleği (Gsm)</div>
+          <div class="score-card-value" id="digitspan-value">-</div>
+          <div class="score-card-sub" id="digitspan-sub"></div>
+          <div class="score-card-sub" id="digitspan-detail" style="font-size: 11px; margin-top: 6px; color: var(--text-tertiary);"></div>
+        </div>
+
+        <!-- Analogies -->
+        <div class="score-card" style="grid-column: 1 / -1;">
+          <div class="score-card-label">
+            Sözel Akıl Yürütme
+            <span class="prenorm-badge">ÖN-NORMATİF</span>
+          </div>
+          <div class="score-card-value" id="analogies-value">-</div>
+          <div class="score-card-sub" id="analogies-sub"></div>
+          <div class="score-card-note">
+            Bu skor henüz normatif aşamadadır. Yeterli veri toplandıktan sonra IQ ölçeğine dönüştürülecektir.
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile Chart -->
+      <div class="profile-chart card">
+        <div class="profile-chart-title">Profil Grafiği</div>
+        <div id="profile-chart-bars"></div>
+        <div class="chart-legend">
+          <div class="chart-legend-item">
+            <div class="chart-legend-swatch normed"></div>
+            <span>Norm bazlı</span>
+          </div>
+          <div class="chart-legend-item">
+            <div class="chart-legend-swatch prenorm"></div>
+            <span>Ön-normatif</span>
+          </div>
+          <div class="chart-legend-item">
+            <span style="opacity: 0.4;">|</span>
+            <span>Ortalama (100)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Share -->
+      <div class="share-section">
+        <button id="share-btn" class="btn btn-secondary">Sonuçları Kopyala</button>
+        <div id="share-status" class="share-status"></div>
+      </div>
+
+      <div style="text-align: center; margin-top: 16px;">
+        <button class="btn btn-secondary btn-sm" onclick="window.__battery.showHub()">Alt Testlere Dön</button>
+      </div>
+    </section>
+
+  </div>
+
+  <script type="module" src="battery.js"></script>
+</body>
+</html>

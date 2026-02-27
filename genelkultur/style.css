@@ -1,0 +1,17 @@
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#0b0c10;color:#e6e6e6}
+.wrap{min-height:100%;display:flex;flex-direction:column;align-items:center;padding:24px}
+.topbar{width:100%;max-width:800px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.topbar h1{margin:0;font-weight:800;letter-spacing:.5px;text-transform:lowercase}
+.card{width:100%;max-width:800px;background:#11131a;border:1px solid #222532;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.35);padding:24px}
+.hidden{display:none}
+.prompt{font-size:22px;font-weight:800;letter-spacing:.2px;padding:8px 0 20px 0;border-bottom:1px dashed #2a2f3a;margin-bottom:16px}
+.answer-form{margin:14px 0}
+#answerInput{width:100%;padding:12px 14px;border:1px solid #2a2f3a;border-radius:12px;background:#0f1118;color:#e6e6e6;font-size:18px}
+.nav{display:flex;justify-content:space-between;margin-top:10px}
+.btn{background:#2563eb;border:0;color:white;padding:10px 16px;border-radius:10px;font-weight:700;cursor:pointer}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.ghost{background:transparent;border:1px solid #2a2f3a}
+.footer{opacity:.65;margin-top:14px}
+.summary-correct{color:#86efac}
+.summary-wrong{color:#fda4af}
+.feedback{margin-top:10px;font-weight:600}

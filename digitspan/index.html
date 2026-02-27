@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Keep these if you already had them; safe to remove pure.css if unused -->
+    <link rel="stylesheet" href="pure-v2.0.6.css" />
+    <link rel="stylesheet" href="index.css" />
+    <script src="index.js" type="module"></script>
+    <title>Digit Span — Sayı Dizisi Pilot</title>
+  </head>
+
+  <body>
+    <h2>Sayı Dizisi (Digit Span) — Pilot</h2>
+
+    <div id="container">
+      <button id="play" data-clicked="false">BAŞLAT</button>
+
+      <form>
+        <div id="textbox-container">
+          <!-- masked visual input -->
+          <span id="pseudo-submission" tabindex="0">&nbsp;</span>
+          <!-- real backing input (usually hidden by CSS) -->
+          <input id="submission" type="text" inputmode="numeric" autocomplete="off" />
+        </div>
+        <button id="submit-and-continue" disabled>Gönder & Devam</button>
+      </form>
+
+      <div class="scores">
+        <table>
+          <caption>Puanlarınız</caption>
+          <thead>
+            <tr>
+              <th>Kategori</th>
+              <th>Ham</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr name="forward">
+              <td>İleri</td>
+              <td>0</td>
+            </tr>
+            <tr name="backward">
+              <td>Geri</td>
+              <td>0</td>
+            </tr>
+            <tr name="sequencing">
+              <td>Sıralama</td>
+              <td>0</td>
+            </tr>
+            <tr name="overall">
+              <td>Toplam</td>
+              <td>0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="actions">
+        <button id="continue-to-hub" type="button" style="display:none;">Alt Testlere Dön</button>
+      </div>
+    </div>
+  </body>
+</html>

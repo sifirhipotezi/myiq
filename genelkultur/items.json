@@ -1,0 +1,348 @@
+{
+  "title": "Genel Kültür Testi",
+  "lang": "tr",
+  "version": 1,
+  "items": [
+    {
+      "id": 1,
+      "prompt": "Ay'a ayak basan ilk kişinin soyadı",
+      "choices": [
+        "Armstrong",
+        "Neil Armstrong"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 2,
+      "prompt": "Afrika ve Avustralya arasındaki okyanus",
+      "choices": [
+        "Hint",
+        "Hint Okyanusu",
+        ""
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 3,
+      "prompt": "Dünya üzerindeki en büyük çöl",
+      "choices": [
+        "Antartika",
+        "Antarktika",
+        "Antartik",
+        "Antarktik"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 4,
+      "prompt": "abd'de büyük buhran'ın başlangıç yılı",
+      "choices": [
+        "1929",
+        "Bin dokuz yüz yirmi dokuz",
+        "Bindokuzyüzyirmidokuz",
+        "bin dokuz yuz yirmi dokuz"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 5,
+      "prompt": "bitkilerde genetik kalıtısallığı keşfeden bilim insanının soyadı",
+      "choices": [
+        "Mendel",
+        "Gregor Mendel"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 6,
+      "prompt": "güneş'e en yakın gezegen",
+      "choices": [
+        "Merkür",
+        "Merkur"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 7,
+      "prompt": "kendi küllerinden doğan mitik kuş",
+      "choices": [
+        "Anka",
+        "Zümrüdüanka",
+        "Ankakuşu",
+        "Anka kuşu",
+        "Anka kusu",
+        "Phoenix"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 8,
+      "prompt": "kaplumbağa terbiyecisi'nin çizerinin ilk ismi",
+      "choices": [
+        "Osman",
+        "Osman Hamdi",
+        "Osman Hamdi Bey"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 9,
+      "prompt": "bolşevik devrimi'nin liderinin soyadı",
+      "choices": [
+        "Lenin",
+        "V.I. Lenin",
+        "İlyiç Lenin"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 10,
+      "prompt": "zeka testlerini ilk kez bulup uygulayan eğitimcinin soyadı",
+      "choices": [
+        "Binet",
+        "Stanford Binet"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 11,
+      "prompt": "erken 20. yy'da abd'ye göç eden macar yahudisi bilim insanlarına verilen isim",
+      "choices": [
+        "Marslılar",
+        "Martians",
+        "The Martians",
+        "Marslakok"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 12,
+      "prompt": "bitcoin'in temelini atan kişinin ilk ismi",
+      "choices": [
+        "Satoshi",
+        "Satoşi",
+        "Satosi"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 13,
+      "prompt": "galileo'yu yargılayan kilise mahkemesi/kurumu",
+      "choices": [
+        "Engizisyon",
+        "Inquisition"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 14,
+      "prompt": "m.ö. çin'den başlayıp avrupa'ya uzanan tarihi ticaret yolu",
+      "choices": [
+        "İpek",
+        "İpek yolu",
+        "Ipek",
+        "ıpek yolu",
+        "ipek yolu"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 15,
+      "prompt": "hindistan'daki kutsal nehir",
+      "choices": [
+        "Ganj",
+        "Ganj Nehri"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 16,
+      "prompt": "samanyolu'na en yakın galaksi",
+      "choices": [
+        "Andromeda",
+        "Andromeda Galaksisi"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 17,
+      "prompt": "kültür devrimi, serçe katliamı, büyük ileri adım ile bilinen diktatörün ilk ismi",
+      "choices": [
+        "Mao",
+        "Mao Zedung"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 18,
+      "prompt": "başkenti oslo olan ülke",
+      "choices": [
+        "Norveç",
+        "Norvec"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 19,
+      "prompt": "darwin'in doğal seçilim fikrini keşfettiği adalar",
+      "choices": [
+        "Galapagos",
+        "Galapagos Adaları"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 20,
+      "prompt": "antik roma'daki büyük stadyum",
+      "choices": [
+        "Kolezyum",
+        "Kollezyum",
+        "Colloseum"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 21,
+      "prompt": "ornitologların uzmanlaştığı hayvan familyası",
+      "choices": [
+        "Kuş",
+        "Kuşlar",
+        "Kuşgiller",
+        "Kus",
+        "Kuslar",
+        "Kusgiller"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 22,
+      "prompt": "yönetimin soyluların elinde olduğu rejim",
+      "choices": [
+        "Aristokrasi"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 23,
+      "prompt": "basık, kapalı alan korkusu",
+      "choices": [
+        "klostrofobi"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 24,
+      "prompt": "ilk kadın savaş pilotunun soyadı",
+      "choices": [
+        "Gökçen",
+        "Gokcen",
+        "Sabiha Gokcen",
+        "Sabiha Gökçen"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 25,
+      "prompt": "ferhangi şeyler tiyatro oyununu sahneleyen tiyatrocunun soyadı",
+      "choices": [
+        "Şensoy",
+        "Sensoy"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 26,
+      "prompt": "karadeliklerle ilgili çalışmalarıyla ünlü fizikçi (soyadı)",
+      "choices": [
+        "Hawking",
+        "Stephen Hawking"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 27,
+      "prompt": "onkologların uzmanlık alanı",
+      "choices": [
+        "Kanser"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 28,
+      "prompt": "ispanyol faşist liderin soyadı",
+      "choices": [
+        "Franko",
+        "Franco"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 29,
+      "prompt": "turing testini ortaya atan bilgisayar bilimcisinin ilk ismi",
+      "choices": [
+        "Alan"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 30,
+      "prompt": "olimpiyat oyunlarının başladığı ülke",
+      "choices": [
+        "Antik Yunan",
+        "Yunan",
+        "Yunanistan",
+        "Eski Yunan"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 31,
+      "prompt": "karamazov kardeşler'in yazarı (soyadı)",
+      "choices": [
+        "Dostoyevski",
+        "Dostoevski"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    },
+    {
+      "id": 32,
+      "prompt": "prusyalı tarih ve mantık filozofunun soyadı",
+      "choices": [
+        "Hegel"
+      ],
+      "answer_index": null,
+      "answer_text": null
+    }
+  ]
+}

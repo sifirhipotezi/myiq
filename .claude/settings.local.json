@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node --check battery.js)",
+      "Bash(node -e \":*)",
+      "Bash(node --check verbalcomprehensionnorms.js)",
+      "Bash(node --check digitspan/scaled-scores.js)",
+      "Bash(node --check Matrices/kbit2.js)",
+      "Bash(npx --version)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(node -e \"console.log\\(process.execPath\\)\")",
+      "Bash(where npx.cmd)",
+      "Bash(git add battery.css battery.js index.html)",
+      "Bash(git commit:*)",
+      "Bash(git add .claude/)"
+    ]
+  }
+}

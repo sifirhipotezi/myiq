@@ -1,0 +1,102 @@
+@import './table.css';
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  padding: 1em;
+}
+
+#container {
+  padding: 1em;
+  text-align: center;
+}
+
+#container > *,
+form > * {
+  margin-bottom: 1em;
+}
+
+h2 {
+  text-align: center;
+}
+
+#years {
+  text-align: center;
+  margin-left: 1em;
+}
+
+#textbox-container {
+  position: relative;
+  width: min-content;
+  margin: auto;
+  margin-bottom: 1em;
+}
+
+#submission {
+  opacity: 0;
+  position: absolute;
+}
+
+@font-face {
+  font-family: 'Password';
+  font-style: normal;
+  font-weight: 400;
+  src: url(password.ttf);
+}
+
+#pseudo-submission {
+  display: inline-block;
+  position: relative;
+
+  width: 10em;
+  min-width: 10em;
+  max-width: 10em;
+
+  appearance: textfield;
+  border: 2px inset;
+  background-color: white;
+  text-align: left;
+  outline: none !important;
+
+  font-family: 'Password';
+
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+#pseudo-submission::-webkit-scrollbar {
+  /* WebKit */
+  width: 0;
+  height: 0;
+}
+
+.visible-digit {
+  font-family: Arial;
+}
+
+#pseudo-submission:not([contenteditable='true']) {
+  background: lightgrey;
+}
+
+#pseudo-submission.test-complete::before {
+  font-family: Arial;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  content: 'Test complete!';
+}
+
+#lang {
+  text-align: right;
+  width: 3em;
+}
+

@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "zekatesti-dev",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["C:/Program Files/nodejs/node_modules/npm/bin/npx-cli.js", "http-server", ".", "-p", "8080", "-c-1", "--cors"],
+      "port": 8080
+    }
+  ]
+}
