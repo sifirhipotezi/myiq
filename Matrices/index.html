@@ -355,10 +355,8 @@
         <div id="age-group-value" class="result-item"></div>
       </div>
       <div class="actions">
-        <button id="share-btn" class="secondary" type="button">Sonuçları Paylaş</button>
         <button class="secondary" type="button" onclick="window.location.href='../index.html'" style="margin-left:8px;">Alttestlere Dön</button>
       </div>
-      <p id="share-status" class="muted" aria-live="polite"></p>
     </section>
   </main>
 
@@ -399,8 +397,6 @@
     const attemptedValue = document.getElementById('attempted-value');
     const durationValue = document.getElementById('duration-value');
     const ageGroupValue = document.getElementById('age-group-value');
-    const shareBtn = document.getElementById('share-btn');
-    const shareStatus = document.getElementById('share-status');
 
     const state = {
       ageInput: null,
@@ -798,39 +794,9 @@
       }
     }
 
-    async function shareResults() {
-      if (!state.result) {
-        return;
-      }
-
-      const r = state.result;
-      const descriptor = r.ss !== null ? getDescriptor(r.ss) : 'Hesaplanamadı';
-      const text = [
-        'KBIT-2 Nonverbal (Matrices) Sonuç Özeti',
-        `Tarih: ${new Date(r.timestamp).toLocaleString('tr-TR')}`,
-        `Yaş Grubu: ${r.age_group}`,
-        `Cinsiyet: ${r.cinsiyet}`,
-        `Ham Puan: ${r.raw}`,
-        `Standart Puan (SS): ${r.ss ?? '-'}`,
-        `Düzey: ${descriptor}`,
-        `Yüzdelik Dilim: ${r.percentile}`,
-        `Yanıtlanan Soru: ${r.items_attempted}`,
-        `Kesme Kuralı Uygulandı: ${r.discontinued ? 'Evet' : 'Hayır'}`,
-        `Süre: ${formatDuration(r.duration_seconds)}`
-      ].join('\n');
-
-      try {
-        await navigator.clipboard.writeText(text);
-        shareStatus.textContent = 'Sonuç özeti panoya kopyalandı.';
-      } catch (err) {
-        shareStatus.textContent = 'Kopyalama başarısız oldu. Tarayıcı izinlerini kontrol edin.';
-      }
-    }
-
     setupDebugMode();
     startBtn.addEventListener('click', startTest);
     nextBtn.addEventListener('click', onNext);
-    shareBtn.addEventListener('click', shareResults);
     maybeAutoStartFromSession();
   </script>
 </body>

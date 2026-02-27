@@ -148,19 +148,6 @@ function finish() {
   $('#scoreline').textContent = `Puan: ${correct} / ${items.length}`;
   saveBatteryResult('genelkultur', `${correct}/${items.length}`);
 
-  const ol = $('#answerkey');
-  ol.innerHTML = '';
-  items.forEach((it, idx) => {
-    const li = document.createElement('li');
-    const user = state.answers[idx] || '(boş)';
-    const ok = state.ok[idx];
-    const keyText = displayAnswerKey(it);
-    li.innerHTML = `<strong>${it.prompt || `soru ${idx + 1}`}</strong>: doğru -> <em>${keyText}</em> - ` +
-      (ok ? `<span class="summary-correct">doğru</span>` : `<span class="summary-wrong">yanlış</span>`) +
-      `; sen: ${user}`;
-    ol.appendChild(li);
-  });
-
   $('#card').classList.add('hidden');
   $('#result').classList.remove('hidden');
 }

@@ -791,13 +791,15 @@ async function captureResultsImageBlob() {
   if (!resultsEl) throw new Error('Sonuç alanı bulunamadı.');
 
   const bgColor = getComputedStyle(document.body).backgroundColor || '#f8f9fb';
-  const scale = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
+  const scale = 3;
 
   const canvas = await html2canvas(resultsEl, {
     backgroundColor: bgColor,
     scale,
     useCORS: true,
     logging: false,
+    width: resultsEl.scrollWidth,
+    height: resultsEl.scrollHeight,
     scrollX: 0,
     scrollY: -window.scrollY,
   });
@@ -806,7 +808,7 @@ async function captureResultsImageBlob() {
     canvas.toBlob((blob) => {
       if (blob) resolve(blob);
       else reject(new Error('Görüntü oluşturulamadı.'));
-    }, 'image/png');
+    }, 'image/jpeg', 0.95);
   });
 }
 
@@ -815,7 +817,7 @@ async function shareResultsImage(scores) {
     setShareStatus('Görsel hazırlanıyor...', 0);
     const blob = await captureResultsImageBlob();
     const caption = getShareCaption(scores);
-    const file = new File([blob], 'zekatesti-sonuc.png', { type: 'image/png' });
+    const file = new File([blob], 'zekatesti-sonuc.jpg', { type: 'image/jpeg' });
 
     if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
       await navigator.share({
@@ -830,7 +832,7 @@ async function shareResultsImage(scores) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'zekatesti-sonuc.png';
+    a.download = 'zekatesti-sonuc.jpg';
     document.body.appendChild(a);
     a.click();
     a.remove();

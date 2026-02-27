@@ -101,19 +101,6 @@ function finish() {
   $('#scoreline').textContent = `Puan: ${correct} / ${items.length}`;
   saveBatteryResult('kelimebilgisi', `${correct}/${items.length}`);
 
-  const ol = $('#answerkey');
-  ol.innerHTML = '';
-  items.forEach((it, idx) => {
-    const li = document.createElement('li');
-    const user = state.answers[idx];
-    const ok = user === it.answer_index;
-    li.innerHTML = `<strong>${it.prompt || `soru ${idx + 1}`}</strong>: doğru -> <em>${it.answer_text}</em>` +
-      (user == null ? ` - <span class="summary-wrong">(boş)</span>` :
-      ok ? ` - <span class="summary-correct">(doğru)</span>` :
-      ` - <span class="summary-wrong">(yanlış; sen: ${it.choices[user]})</span>`);
-    ol.appendChild(li);
-  });
-
   $('#card').classList.add('hidden');
   $('#result').classList.remove('hidden');
 }
