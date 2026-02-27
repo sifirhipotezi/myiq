@@ -488,6 +488,14 @@ body {
   border-top: 1px solid var(--border-light);
 }
 
+.share-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .share-status {
   font-size: 13px;
   color: var(--success);

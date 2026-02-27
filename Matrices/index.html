@@ -369,7 +369,10 @@
     const ITEM_END = 50;
     const TOTAL_ITEMS = ITEM_END - ITEM_START + 1;
     const BASAL = 13;
-    const DEBUG_MODE = new URLSearchParams(window.location.search).get('debug') === '1';
+    const SESSION_KEY = 'zekatesti_session';
+    const searchParams = new URLSearchParams(window.location.search);
+    const DEBUG_MODE = searchParams.get('debug') === '1';
+    const FROM_BATTERY = searchParams.get('from') === 'battery';
 
     const appRoot = document.getElementById('app-root');
     const landingScreen = document.getElementById('screen-landing');
@@ -444,6 +447,16 @@
         return null;
       }
       return parsed;
+    }
+
+    function getBatterySession() {
+      try {
+        const raw = localStorage.getItem(SESSION_KEY);
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch (err) {
+        return null;
+      }
     }
 
     function getAgeGroup(ageInYears) {
@@ -734,32 +747,55 @@
 
     function startTest() {
       const ageValue = ageInput.value;
-      if (!ageValue) {
+      const cinsiyetValue = genderInput.value;
+      startTestWithProfile(ageValue, cinsiyetValue, 'manual');
+    }
+
+    function startTestWithProfile(ageValue, cinsiyetValue, source) {
+      if (ageValue === null || ageValue === undefined || String(ageValue).trim() === '') {
         landingError.textContent = 'Lütfen yaşınızı girin.';
-        return;
+        return false;
       }
 
       const parsedAge = parseAgeInput(ageValue);
       if (parsedAge === null) {
         landingError.textContent = 'Geçerli bir yaş girin.';
-        return;
+        return false;
       }
 
       landingError.textContent = '';
-      state.ageInput = ageValue;
-      state.cinsiyet = genderInput.value;
+      state.ageInput = String(ageValue);
+      state.cinsiyet = cinsiyetValue || 'Belirtmek istemiyorum';
       state.ageGroup = getAgeGroup(parsedAge);
 
       if (!state.ageGroup) {
         landingError.textContent = 'Yaş grubu hesaplanamadı.';
-        return;
+        return false;
       }
 
       landingScreen.classList.add('hidden');
       testScreen.classList.remove('hidden');
       appRoot.classList.remove('centered');
-      writeDebug('START_TEST', {});
+      writeDebug('START_TEST', { source });
       renderItem();
+      return true;
+    }
+
+    function maybeAutoStartFromSession() {
+      if (!FROM_BATTERY) return;
+      const session = getBatterySession();
+      if (!session) return;
+
+      const ageYears = session.age_years;
+      if (ageYears === null || ageYears === undefined) return;
+
+      const started = startTestWithProfile(ageYears, session.cinsiyet, 'session');
+      if (started) {
+        writeDebug('AUTO_START_SESSION', {
+          ageYears,
+          cinsiyet: session.cinsiyet || null
+        });
+      }
     }
 
     async function shareResults() {
@@ -795,6 +831,7 @@
     startBtn.addEventListener('click', startTest);
     nextBtn.addEventListener('click', onNext);
     shareBtn.addEventListener('click', shareResults);
+    maybeAutoStartFromSession();
   </script>
 </body>
 </html>

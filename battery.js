@@ -50,6 +50,7 @@ const SUBTESTS = [
 // ─── Helpers ───
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => [...document.querySelectorAll(sel)];
+let html2canvasLoadPromise = null;
 
 function generateUUID() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
@@ -601,8 +602,12 @@ function renderResults() {
     renderResults._persisted = true;
   }
 
-  // Share button
+  // Share buttons
   $('#share-btn').onclick = () => shareResults(scores);
+  const shareImageBtn = $('#share-image-btn');
+  if (shareImageBtn) {
+    shareImageBtn.onclick = () => shareResultsImage(scores);
+  }
 }
 
 function renderProfileChart(scores) {
@@ -742,6 +747,107 @@ function percentileToZ(pct) {
   }
 }
 
+function setShareStatus(message, timeoutMs = 3000) {
+  const status = $('#share-status');
+  if (!status) return;
+  status.textContent = message;
+  if (timeoutMs > 0) {
+    setTimeout(() => {
+      if (status.textContent === message) status.textContent = '';
+    }, timeoutMs);
+  }
+}
+
+function getShareCaption(scores) {
+  const iq = scores.compositeIQ ?? scores.vci?.vci ?? null;
+  if (iq !== null && iq !== undefined) {
+    return `Benim IQ'm ${iq}`;
+  }
+  return 'Benim IQ sonuçlarım';
+}
+
+function loadHtml2Canvas() {
+  if (window.html2canvas) return Promise.resolve(window.html2canvas);
+  if (html2canvasLoadPromise) return html2canvasLoadPromise;
+
+  html2canvasLoadPromise = new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
+    script.async = true;
+    script.onload = () => {
+      if (window.html2canvas) resolve(window.html2canvas);
+      else reject(new Error('html2canvas yüklendi ama erişilemedi.'));
+    };
+    script.onerror = () => reject(new Error('html2canvas yüklenemedi.'));
+    document.head.appendChild(script);
+  });
+
+  return html2canvasLoadPromise;
+}
+
+async function captureResultsImageBlob() {
+  const html2canvas = await loadHtml2Canvas();
+  const resultsEl = $('#screen-results');
+  if (!resultsEl) throw new Error('Sonuç alanı bulunamadı.');
+
+  const bgColor = getComputedStyle(document.body).backgroundColor || '#f8f9fb';
+  const scale = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
+
+  const canvas = await html2canvas(resultsEl, {
+    backgroundColor: bgColor,
+    scale,
+    useCORS: true,
+    logging: false,
+    scrollX: 0,
+    scrollY: -window.scrollY,
+  });
+
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (blob) resolve(blob);
+      else reject(new Error('Görüntü oluşturulamadı.'));
+    }, 'image/png');
+  });
+}
+
+async function shareResultsImage(scores) {
+  try {
+    setShareStatus('Görsel hazırlanıyor...', 0);
+    const blob = await captureResultsImageBlob();
+    const caption = getShareCaption(scores);
+    const file = new File([blob], 'zekatesti-sonuc.png', { type: 'image/png' });
+
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({
+        title: 'Zekatesti Sonuçlarım',
+        text: caption,
+        files: [file],
+      });
+      setShareStatus('Paylaşım ekranı açıldı.');
+      return;
+    }
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'zekatesti-sonuc.png';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+
+    try {
+      await navigator.clipboard.writeText(caption);
+      setShareStatus('Görsel indirildi. Açıklama panoya kopyalandı.');
+    } catch {
+      setShareStatus(`Görsel indirildi. Açıklama: ${caption}`);
+    }
+  } catch (err) {
+    console.error(err);
+    setShareStatus('Görsel paylaşımı başarısız oldu.');
+  }
+}
+
 // ─── Share ───
 function shareResults(scores) {
   const vci = scores.vci;
@@ -767,14 +873,9 @@ function shareResults(scores) {
   }
 
   navigator.clipboard.writeText(text).then(() => {
-    const status = $('#share-status');
-    if (status) {
-      status.textContent = 'Sonuçlar panoya kopyalandı.';
-      setTimeout(() => { status.textContent = ''; }, 3000);
-    }
+    setShareStatus('Sonuçlar panoya kopyalandı.');
   }).catch(() => {
-    const status = $('#share-status');
-    if (status) status.textContent = 'Kopyalama başarısız oldu.';
+    setShareStatus('Kopyalama başarısız oldu.');
   });
 }
 
